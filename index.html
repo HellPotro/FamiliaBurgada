@@ -9,54 +9,69 @@
   </head>
 
   <body>
-<!-- IZQUIERDA: Árbol -->
-  <div class="tree-container">
-    <div class="section-title">Familia Burgada</div>
-    <div id="tree" class="tree">
-      <!-- Aquí se inyecta el árbol desde JS -->
-    </div>
-  </div>
 
-  <!-- DERECHA: Detalle persona -->
-  <div class="info-container">
-    <div class="section-title">Detalles de la persona</div>
-
-    <div id="info-placeholder" class="info-placeholder">
-      Haz clic en alguien del árbol para ver su información.
-    </div>
-
-    <div id="info-card" class="info-card hidden">
-      <button id="close-card" class="close-btn" aria-label="Cerrar">&times;</button>
-
-      <div class="info-card-header">
-        <img id="info-photo" class="info-card-photo" src="" alt="" />
-        <div class="info-card-main">
-          <div class="badge" id="info-relation"></div>
-          <div class="info-card-name" id="info-name"></div>
-          <div class="info-card-sub" id="info-generation"></div>
-          <div class="info-card-sub" id="info-dates"></div>
+      <div class="app">
+    <!-- ÁRBOL + ZOOM -->
+    <div class="tree-wrapper">
+      <div class="tree-toolbar">
+        <div class="toolbar-left">
+          <span class="section-title" style="margin-bottom:0;">Árbol genealógico</span>
+        </div>
+        <div class="toolbar-right">
+          <button id="zoom-out" class="zoom-btn">-</button>
+          <button id="zoom-reset" class="zoom-btn">Reset</button>
+          <button id="zoom-in" class="zoom-btn">+</button>
+          <span id="zoom-level" class="zoom-level-label">100%</span>
         </div>
       </div>
 
-      <div class="info-card-body" id="info-description"></div>
+      <div class="tree-scroll">
+        <div id="tree-inner" class="tree-inner">
+          <div id="tree" class="tree">
+            <!-- aquí se inyecta el UL del árbol -->
+          </div>
+        </div>
+      </div>
+    </div>
 
-      <div class="info-card-meta">
-        <div>
-          <div class="meta-label">Lugar de nacimiento</div>
-          <div id="info-birthplace"></div>
+    <!-- INFO ABAJO -->
+    <div class="info-container">
+      <div class="section-title">Detalles de la persona</div>
+
+      <div id="info-placeholder" class="info-placeholder">
+        Haz clic en alguien del árbol para ver su información.
+      </div>
+
+      <div id="info-card" class="info-card hidden">
+        <div class="info-card-header">
+          <img id="info-photo" class="info-card-photo" src="" alt="" />
+          <div class="info-card-main">
+            <div class="badge" id="info-relation"></div>
+            <div class="info-card-name" id="info-name"></div>
+            <div class="info-card-sub" id="info-generation"></div>
+            <div class="info-card-sub" id="info-dates"></div>
+          </div>
         </div>
-        <div>
-          <div class="meta-label">Pareja(s)</div>
-          <div id="info-spouses"></div>
-        </div>
-        <div>
-          <div class="meta-label">Notas</div>
-          <div id="info-notes"></div>
+
+        <div class="info-card-body" id="info-description"></div>
+
+        <div class="info-card-meta">
+          <div>
+            <div class="meta-label">Lugar de nacimiento</div>
+            <div id="info-birthplace"></div>
+          </div>
+          <div>
+            <div class="meta-label">Pareja(s)</div>
+            <div id="info-spouses"></div>
+          </div>
+          <div>
+            <div class="meta-label">Notas</div>
+            <div id="info-notes"></div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
 
     <script src="script.js"></script>
   </body>
