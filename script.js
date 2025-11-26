@@ -38,7 +38,7 @@
         "birthDate": "1975-01-15",
         "deathDate": "",
         "birthPlace": "Madrid, España",
-        "photoUrl": "https://placekitten.com/222/222",
+        "photoUrl": "",
         "notes": "Organiza las reuniones familiares."
       },
       {
@@ -64,7 +64,7 @@
         "birthDate": "1975-01-15",
         "deathDate": "",
         "birthPlace": "Madrid, España",
-        "photoUrl": "https://placekitten.com/222/222",
+        "photoUrl": "",
         "notes": "Organiza las reuniones familiares."
       },
       {
@@ -77,7 +77,7 @@
         "birthDate": "1974-09-30",
         "deathDate": "",
         "birthPlace": "Sevilla, España",
-        "photoUrl": "https://placekitten.com/223/223",
+        "photoUrl": "",
         "notes": "Aficionado a la fotografía."
       },
       {
@@ -90,7 +90,7 @@
         "birthDate": "1979-04-08",
         "deathDate": "",
         "birthPlace": "Madrid, España",
-        "photoUrl": "https://placekitten.com/226/226",
+        "photoUrl": "",
         "notes": "El 'informático' de la familia."
       },
         {
@@ -103,7 +103,7 @@
         "birthDate": "1979-04-08",
         "deathDate": "",
         "birthPlace": "Madrid, España",
-        "photoUrl": "https://placekitten.com/226/226",
+        "photoUrl": "",
         "notes": "El 'informático' de la familia."
       }
     ];
