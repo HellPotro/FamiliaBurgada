@@ -8,7 +8,7 @@
         "parentId": null,
         "name": "Pedro Burgada Besantes",
         "generation": 1,
-        "description": "Primer Burgada en venir a Cantabria para fabricar toneles.",
+        "description": "En el último tercio del siglo diecinueve, llega a Santander, procedente del País Vasco nuestro primer Pedro Burgada, nacido en San Sebastián. Establece una pequeña industria en una travesía de la calle del Monte, para fabricar toneles (cubas grandes para envasar vino u otros líquidos). Contrae matrimonio con una joven santanderina, Felisa Campo. Tienen dos hijos, varones. El mayor Pedro y el segundo Francisco.",
         "birthDate": "1850",
         "deathDate": "",
         "birthPlace": "País Vasco, España",
