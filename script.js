@@ -284,7 +284,7 @@
     "birthDate": "",
     "deathDate": "",
     "birthPlace": "",
-    "photoUrl": "",
+    "photoUrl": "images/pedro_burgada_palleiro.png",
     "notes": ""
   },
   {
