@@ -34,7 +34,6 @@
         "parentId": 1,   /* referencia al padre o a la madre (uno de los dos de la pareja) */
         "name": "Ana Pérez",
         "generation": 2,
-        "relation": "Hija",
         "description": "Ana es la hija mayor, trabaja como médica.",
         "birthDate": "1975-01-15",
         "deathDate": "",
@@ -48,7 +47,6 @@
         "parentId": null,
         "name": "Carlos García",
         "generation": 2,
-        "relation": "Yerno",
         "description": "Carlos es diseñador gráfico y se unió a la familia al casarse con Ana.",
         "birthDate": "1974-09-30",
         "deathDate": "",
@@ -62,7 +60,6 @@
         "parentId": 3,
         "name": "Lucía García",
         "generation": 3,
-        "relation": "Nieta",
         "description": "Lucía está estudiando arquitectura.",
         "birthDate": "2000-05-12",
         "deathDate": "",
@@ -76,7 +73,6 @@
         "parentId": 3,
         "name": "Diego García",
         "generation": 3,
-        "relation": "Nieto",
         "description": "Diego es aficionado a la música y toca la guitarra.",
         "birthDate": "2003-11-02",
         "deathDate": "",
@@ -90,7 +86,6 @@
         "parentId": 1,
         "name": "Luis Pérez",
         "generation": 2,
-        "relation": "Hijo",
         "description": "Luis trabaja como ingeniero informático.",
         "birthDate": "1979-04-08",
         "deathDate": "",
@@ -144,7 +139,7 @@
 
       const roleSpan = document.createElement("span");
       roleSpan.className = "person-role";
-      roleSpan.textContent = person.relation || `Generación ${person.generation}`;
+      roleSpan.textContent = `Generación ${person.generation}`;
 
       div.appendChild(img);
       div.appendChild(nameSpan);
@@ -242,7 +237,6 @@
 
     const infoPhoto = document.getElementById("info-photo");
     const infoName = document.getElementById("info-name");
-    const infoRelation = document.getElementById("info-relation");
     const infoGeneration = document.getElementById("info-generation");
     const infoDates = document.getElementById("info-dates");
     const infoDescription = document.getElementById("info-description");
@@ -258,7 +252,6 @@
       infoPhoto.src = person.photoUrl || "https://via.placeholder.com/72";
       infoPhoto.alt = person.name;
       infoName.textContent = person.name;
-      infoRelation.textContent = person.relation || "Familiar";
       infoGeneration.textContent = person.generation
         ? `Generación ${person.generation}`
         : "";
