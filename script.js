@@ -432,7 +432,39 @@
       infoPlaceholder.classList.remove("hidden");
     });
 
-    // ==========
-    // Arrancar
-    // ==========
+
+    // ====== Zoom del árbol ======
+    const treeInner = document.getElementById("tree-inner");
+    const zoomInBtn = document.getElementById("zoom-in");
+    const zoomOutBtn = document.getElementById("zoom-out");
+    const zoomResetBtn = document.getElementById("zoom-reset");
+    const zoomLevelLabel = document.getElementById("zoom-level");
+
+    let zoom = 1;
+    const minZoom = 0.5;
+    const maxZoom = 2;
+    const zoomStep = 0.1;
+
+    function applyZoom() {
+      treeInner.style.transform = `scale(${zoom})`;
+      zoomLevelLabel.textContent = `${Math.round(zoom * 100)}%`;
+    }
+
+    zoomInBtn.addEventListener("click", () => {
+      zoom = Math.min(maxZoom, zoom + zoomStep);
+      applyZoom();
+    });
+
+    zoomOutBtn.addEventListener("click", () => {
+      zoom = Math.max(minZoom, zoom - zoomStep);
+      applyZoom();
+    });
+
+    zoomResetBtn.addEventListener("click", () => {
+      zoom = 1;
+      applyZoom();
+    });
+
+    // build & init
     buildTree();
+    applyZoom();
