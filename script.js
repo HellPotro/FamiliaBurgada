@@ -1,7 +1,5 @@
-// ==========
-    // JSON de ejemplo (puedes moverlo a un .json y cargarlo con fetch si quieres)
-    // ==========
-    const peopleData = [
+// ====== JSON de ejemplo ======
+      const peopleData = [
   {
     "id": 1,
     "partnerId": 2,
@@ -238,13 +236,9 @@
   }
 ];
 
-    // ==========
-    // Preparar estructuras auxiliares
-    // ==========
     const peopleById = new Map();
     peopleData.forEach(p => peopleById.set(p.id, p));
 
-    // hijos por parentId (se asume que parentId apunta a uno de los miembros de la pareja)
     const childrenByParentId = new Map();
     peopleData.forEach(p => {
       if (p.parentId != null) {
@@ -256,16 +250,12 @@
     });
 
     function shouldRenderAsPrimary(person) {
-      // Si tiene pareja, solo se dibuja una vez: cuando id < partnerId
       if (person.partnerId) {
         return person.id < person.partnerId;
       }
       return true;
     }
 
-    // ==========
-    // Crear DOM de persona y matrimonio
-    // ==========
     function createPersonNode(person) {
       const div = document.createElement("div");
       div.className = "person-node";
@@ -288,7 +278,6 @@
       div.appendChild(nameSpan);
       div.appendChild(roleSpan);
 
-      // evento de clic
       div.addEventListener("click", () => showPerson(person.id));
 
       return div;
@@ -313,28 +302,22 @@
 
         return { container: marriageDiv, partner };
       } else {
-        // persona sin pareja
         const single = createPersonNode(person);
         return { container: single, partner: null };
       }
     }
 
-    // ==========
-    // Construir recursivamente el árbol
-    // ==========
     function buildSubTree(person, isRoot = false) {
       const li = document.createElement("li");
       const { container, partner } = createMarriageBlock(person, isRoot);
       li.appendChild(container);
 
-      // buscar hijos de esta persona (y opcionalmente de su pareja)
       let children = childrenByParentId.get(person.id) || [];
 
       if (partner && childrenByParentId.has(partner.id)) {
         children = children.concat(childrenByParentId.get(partner.id));
       }
 
-      // evitar duplicados por unión de arrays
       const seenIds = new Set();
       children = children.filter(child => {
         if (seenIds.has(child.id)) return false;
@@ -342,7 +325,6 @@
         return true;
       });
 
-      // solo renderizamos hijos "primarios" (para no duplicar parejas)
       const primaryChildren = children.filter(shouldRenderAsPrimary);
 
       if (primaryChildren.length > 0) {
@@ -360,7 +342,6 @@
       const treeContainer = document.getElementById("tree");
       const rootUl = document.createElement("ul");
 
-      // raíces: sin parentId y que sean "primarios" (una sola vez por pareja)
       const roots = peopleData.filter(
         p => p.parentId == null && shouldRenderAsPrimary(p)
       );
@@ -372,9 +353,7 @@
       treeContainer.appendChild(rootUl);
     }
 
-    // ==========
-    // Lógica de la tarjeta de información
-    // ==========
+    // ====== Info card ======
     const infoCard = document.getElementById("info-card");
     const infoPlaceholder = document.getElementById("info-placeholder");
 
@@ -386,7 +365,6 @@
     const infoBirthplace = document.getElementById("info-birthplace");
     const infoSpouses = document.getElementById("info-spouses");
     const infoNotes = document.getElementById("info-notes");
-    const closeBtn = document.getElementById("close-card");
 
     function showPerson(id) {
       const person = peopleById.get(Number(id));
@@ -399,7 +377,6 @@
         ? `Generación ${person.generation}`
         : "";
 
-      // Fechas
       if ((person.birthDate && person.birthDate.trim() !== "") ||
           (person.deathDate && person.deathDate.trim() !== "")) {
         const birth = person.birthDate || "?";
@@ -415,7 +392,6 @@
       infoBirthplace.textContent = person.birthPlace || "—";
       infoNotes.textContent = person.notes || "—";
 
-      // Parejas
       if (person.partnerId) {
         const spouse = peopleById.get(person.partnerId);
         infoSpouses.textContent = spouse ? spouse.name : "—";
@@ -426,12 +402,6 @@
       infoPlaceholder.classList.add("hidden");
       infoCard.classList.remove("hidden");
     }
-
-    closeBtn.addEventListener("click", () => {
-      infoCard.classList.add("hidden");
-      infoPlaceholder.classList.remove("hidden");
-    });
-
 
     // ====== Zoom del árbol ======
     const treeInner = document.getElementById("tree-inner");
