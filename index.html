@@ -77,6 +77,54 @@
           </div>
         </div>
       </div>
+         <!-- FORMULARIO SOLICITUD CAMBIO -->
+    <div class="request-container">
+      <div class="section-title">Solicitar cambio de información</div>
+      <p style="font-size:0.8rem;color:#6b7280;margin-bottom:8px;">
+        Rellena este formulario para informar de un nuevo nacimiento, fallecimiento o cambio de datos.
+        El sistema generará un pequeño JSON que el administrador puede usar para actualizar el fichero <code>people.json</code>.
+      </p>
+
+      <form id="request-form">
+        <div>
+          <label for="req-reporter">Tu nombre</label>
+          <input id="req-reporter" type="text" placeholder="Ej: Ana Pérez" required />
+        </div>
+
+        <div>
+          <label for="req-type">Tipo de cambio</label>
+          <select id="req-type" required>
+            <option value="">Selecciona...</option>
+            <option value="update-person">Modificar datos de una persona</option>
+            <option value="new-birth">Nuevo nacimiento</option>
+            <option value="death">Fallecimiento</option>
+            <option value="other">Otro</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="req-person-id">Persona relacionada (ID, si lo sabes)</label>
+          <input id="req-person-id" type="text" placeholder="Ej: 3" />
+        </div>
+
+        <div>
+          <label for="req-person-name">Persona relacionada (nombre)</label>
+          <input id="req-person-name" type="text" placeholder="Ej: Ana Pérez o 'hijo de Juan y María'" />
+        </div>
+
+        <div style="grid-column:1 / -1;">
+          <label for="req-details">Detalles</label>
+          <textarea id="req-details"
+            placeholder="Ej: Nuevo nacimiento: Nombre, fecha, padres, lugar...&#10;O: Actualizar fecha de nacimiento de Ana, debería ser 1975-01-10."></textarea>
+        </div>
+
+        <button type="submit">Generar solicitud</button>
+      </form>
+
+      <div id="request-output" class="request-output">
+        Aquí aparecerá el JSON de la solicitud para copiar/pegar.
+      </div>
+    </div>
     </div>
   </div>
 
