@@ -1,12 +1,9 @@
-// ====== JSON de ejemplo ======
+// ====== ESTADO GLOBAL ======
     let peopleData = [];
     let peopleById = new Map();
     let childrenByParentId = new Map();
 
-// Rellenar el selector de generaciones en base a los datos
-const generationFilterSelect = document.getElementById("generation-filter");
-
- // ====== CARGAR JSON ======
+    // ====== CARGAR JSON ======
     async function loadPeople() {
       const res = await fetch('data/people.json');
       peopleData = await res.json();
@@ -25,61 +22,6 @@ const generationFilterSelect = document.getElementById("generation-filter");
       });
     }
 
-function populateGenerationFilter() {
-  if (!generationFilterSelect) return;
-
-  const gens = [...new Set(
-    peopleData
-      .map(p => p.generation)
-      .filter(g => g !== null && g !== undefined)
-  )].sort((a, b) => a - b);
-
-  gens.forEach(g => {
-    const opt = document.createElement("option");
-    opt.value = String(g);
-    opt.textContent = `Generación ${g}`;
-    generationFilterSelect.appendChild(opt);
-  });
-}
-
-function applyGenerationFilter(genValue) {
-  const nodes = document.querySelectorAll(".person-node");
-
-  // reset estado
-  nodes.forEach(node => {
-    node.classList.remove("gen-muted", "gen-highlight");
-  });
-
-  if (!genValue || genValue === "all") {
-    // mostrar todo sin resaltar
-    return;
-  }
-
-  nodes.forEach(node => {
-    const nodeGen = node.dataset.generation;
-    if (nodeGen === genValue) {
-      node.classList.add("gen-highlight");
-    } else {
-      node.classList.add("gen-muted");
-    }
-  });
-}
-
-
-
-    const peopleById = new Map();
-    peopleData.forEach(p => peopleById.set(p.id, p));
-
-    const childrenByParentId = new Map();
-    peopleData.forEach(p => {
-      if (p.parentId != null) {
-        if (!childrenByParentId.has(p.parentId)) {
-          childrenByParentId.set(p.parentId, []);
-        }
-        childrenByParentId.get(p.parentId).push(p);
-      }
-    });
-
     function shouldRenderAsPrimary(person) {
       if (person.partnerId) {
         return person.id < person.partnerId;
@@ -87,33 +29,33 @@ function applyGenerationFilter(genValue) {
       return true;
     }
 
-      function createPersonNode(person) {
-        const div = document.createElement("div");
-        div.className = "person-node";
-        div.dataset.id = person.id;
-        div.dataset.generation = person.generation ?? "";
-      
-        const img = document.createElement("img");
-        img.className = "person-photo";
-        img.src = person.photoUrl || "https://via.placeholder.com/56";
-        img.alt = person.name;
-      
-        const nameSpan = document.createElement("span");
-        nameSpan.className = "person-name";
-        nameSpan.textContent = person.name;
-      
-        const roleSpan = document.createElement("span");
-        roleSpan.className = "person-role";
-        roleSpan.textContent = person.relation || `Generación ${person.generation}`;
-      
-        div.appendChild(img);
-        div.appendChild(nameSpan);
-        div.appendChild(roleSpan);
-      
-        div.addEventListener("click", () => showPerson(person.id));
-      
-        return div;
-      }
+    // ====== CREACIÓN DE NODOS ======
+    function createPersonNode(person) {
+      const div = document.createElement("div");
+      div.className = "person-node";
+      div.dataset.id = person.id;
+
+      const img = document.createElement("img");
+      img.className = "person-photo";
+      img.src = person.photoUrl || "https://via.placeholder.com/56";
+      img.alt = person.name;
+
+      const nameSpan = document.createElement("span");
+      nameSpan.className = "person-name";
+      nameSpan.textContent = person.name;
+
+      const roleSpan = document.createElement("span");
+      roleSpan.className = "person-role";
+      roleSpan.textContent = `Generación ${person.generation}`;
+
+      div.appendChild(img);
+      div.appendChild(nameSpan);
+      div.appendChild(roleSpan);
+
+      div.addEventListener("click", () => showPerson(person.id));
+
+      return div;
+    }
 
     function createMarriageBlock(person, isRoot = false) {
       const partner = person.partnerId ? peopleById.get(person.partnerId) : null;
@@ -172,8 +114,9 @@ function applyGenerationFilter(genValue) {
 
     function buildTree() {
       const treeContainer = document.getElementById("tree");
-      const rootUl = document.createElement("ul");
+      treeContainer.innerHTML = ""; // limpiar por si recargas
 
+      const rootUl = document.createElement("ul");
       const roots = peopleData.filter(
         p => p.parentId == null && shouldRenderAsPrimary(p)
       );
@@ -185,7 +128,7 @@ function applyGenerationFilter(genValue) {
       treeContainer.appendChild(rootUl);
     }
 
-    // ====== Info card ======
+    // ====== INFO PERSONA ======
     const infoCard = document.getElementById("info-card");
     const infoPlaceholder = document.getElementById("info-placeholder");
 
@@ -235,7 +178,7 @@ function applyGenerationFilter(genValue) {
       infoCard.classList.remove("hidden");
     }
 
-    // ====== Zoom del árbol ======
+    // ====== ZOOM ======
     const treeInner = document.getElementById("tree-inner");
     const zoomInBtn = document.getElementById("zoom-in");
     const zoomOutBtn = document.getElementById("zoom-out");
@@ -267,15 +210,40 @@ function applyGenerationFilter(genValue) {
       applyZoom();
     });
 
-// Evento del select
-if (generationFilterSelect) {
-  generationFilterSelect.addEventListener("change", (e) => {
-    const value = e.target.value;
-    applyGenerationFilter(value);
-  });
-}
+    // ====== FORMULARIO SOLICITUD CAMBIO ======
+    const requestForm = document.getElementById("request-form");
+    const requestOutput = document.getElementById("request-output");
 
-// Arrancar todo
-populateGenerationFilter();
-buildTree();
-applyZoom();
+    requestForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const reporter = document.getElementById("req-reporter").value.trim();
+      const type = document.getElementById("req-type").value;
+      const personId = document.getElementById("req-person-id").value.trim();
+      const personName = document.getElementById("req-person-name").value.trim();
+      const details = document.getElementById("req-details").value.trim();
+
+      const payload = {
+        reportedBy: reporter,
+        reportedAt: new Date().toISOString(),
+        type,                         // "update-person" | "new-birth" | "death" | "other"
+        relatedPerson: {
+          id: personId || null,
+          nameOrReference: personName || null
+        },
+        details
+      };
+
+      requestOutput.textContent =
+        "Solicitud generada (puedes copiar este JSON y usarlo para actualizar people.json o guardarlo donde quieras):\n\n" +
+        JSON.stringify(payload, null, 2);
+
+      requestForm.reset();
+    });
+
+    // ====== ARRANQUE ======
+    (async function init() {
+      await loadPeople();
+      buildTree();
+      applyZoom();
+    })();
