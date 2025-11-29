@@ -13,17 +13,24 @@
      <div class="app">
     <!-- ÁRBOL + ZOOM -->
     <div class="tree-wrapper">
-      <div class="tree-toolbar">
-        <div class="toolbar-left">
-          <span class="section-title" style="margin-bottom:0;">Familia Burgada</span>
+        <div class="tree-toolbar">
+          <div class="toolbar-left">
+            <span class="section-title" style="margin-bottom:0;">Familia Burgada</span>
+            <div style="margin-top:4px;font-size:0.8rem;color:#6b7280;">
+              Generación:
+              <select id="generation-filter" style="font-size:0.8rem;padding:2px 4px;border-radius:999px;border:1px solid #d1d5db;">
+                <option value="all">Todas</option>
+                <!-- Las opciones reales se rellenan desde JS -->
+              </select>
+            </div>
+          </div>
+          <div class="toolbar-right">
+            <button id="zoom-out" class="zoom-btn">-</button>
+            <button id="zoom-reset" class="zoom-btn">Reset</button>
+            <button id="zoom-in" class="zoom-btn">+</button>
+            <span id="zoom-level" class="zoom-level-label">100%</span>
+          </div>
         </div>
-        <div class="toolbar-right">
-          <button id="zoom-out" class="zoom-btn">-</button>
-          <button id="zoom-reset" class="zoom-btn">Reset</button>
-          <button id="zoom-in" class="zoom-btn">+</button>
-          <span id="zoom-level" class="zoom-level-label">100%</span>
-        </div>
-      </div>
 
       <div class="tree-scroll">
         <div id="tree-inner" class="tree-inner">
