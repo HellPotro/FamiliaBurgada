@@ -224,6 +224,18 @@
       background: #eef2ff;
     }
 
+      /* estados de filtro por generación */
+      .person-node.gen-muted {
+        opacity: 0.25;
+        filter: grayscale(0.7);
+      }
+      
+      .person-node.gen-highlight {
+        border-color: #16a34a;
+        background: #dcfce7;
+        box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.4);
+      }
+
     .person-photo {
       width: 56px;
       height: 56px;
