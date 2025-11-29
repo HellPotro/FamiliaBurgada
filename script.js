@@ -1070,6 +1070,51 @@
   }
 ];
 
+// Rellenar el selector de generaciones en base a los datos
+const generationFilterSelect = document.getElementById("generation-filter");
+
+function populateGenerationFilter() {
+  if (!generationFilterSelect) return;
+
+  const gens = [...new Set(
+    peopleData
+      .map(p => p.generation)
+      .filter(g => g !== null && g !== undefined)
+  )].sort((a, b) => a - b);
+
+  gens.forEach(g => {
+    const opt = document.createElement("option");
+    opt.value = String(g);
+    opt.textContent = `Generación ${g}`;
+    generationFilterSelect.appendChild(opt);
+  });
+}
+
+function applyGenerationFilter(genValue) {
+  const nodes = document.querySelectorAll(".person-node");
+
+  // reset estado
+  nodes.forEach(node => {
+    node.classList.remove("gen-muted", "gen-highlight");
+  });
+
+  if (!genValue || genValue === "all") {
+    // mostrar todo sin resaltar
+    return;
+  }
+
+  nodes.forEach(node => {
+    const nodeGen = node.dataset.generation;
+    if (nodeGen === genValue) {
+      node.classList.add("gen-highlight");
+    } else {
+      node.classList.add("gen-muted");
+    }
+  });
+}
+
+
+
     const peopleById = new Map();
     peopleData.forEach(p => peopleById.set(p.id, p));
 
@@ -1090,32 +1135,33 @@
       return true;
     }
 
-    function createPersonNode(person) {
-      const div = document.createElement("div");
-      div.className = "person-node";
-      div.dataset.id = person.id;
-
-      const img = document.createElement("img");
-      img.className = "person-photo";
-      img.src = person.photoUrl || "https://via.placeholder.com/56";
-      img.alt = person.name;
-
-      const nameSpan = document.createElement("span");
-      nameSpan.className = "person-name";
-      nameSpan.textContent = person.name;
-
-      const roleSpan = document.createElement("span");
-      roleSpan.className = "person-role";
-      roleSpan.textContent = `Generación ${person.generation}`;
-
-      div.appendChild(img);
-      div.appendChild(nameSpan);
-      div.appendChild(roleSpan);
-
-      div.addEventListener("click", () => showPerson(person.id));
-
-      return div;
-    }
+      function createPersonNode(person) {
+        const div = document.createElement("div");
+        div.className = "person-node";
+        div.dataset.id = person.id;
+        div.dataset.generation = person.generation ?? "";
+      
+        const img = document.createElement("img");
+        img.className = "person-photo";
+        img.src = person.photoUrl || "https://via.placeholder.com/56";
+        img.alt = person.name;
+      
+        const nameSpan = document.createElement("span");
+        nameSpan.className = "person-name";
+        nameSpan.textContent = person.name;
+      
+        const roleSpan = document.createElement("span");
+        roleSpan.className = "person-role";
+        roleSpan.textContent = person.relation || `Generación ${person.generation}`;
+      
+        div.appendChild(img);
+        div.appendChild(nameSpan);
+        div.appendChild(roleSpan);
+      
+        div.addEventListener("click", () => showPerson(person.id));
+      
+        return div;
+      }
 
     function createMarriageBlock(person, isRoot = false) {
       const partner = person.partnerId ? peopleById.get(person.partnerId) : null;
@@ -1269,6 +1315,15 @@
       applyZoom();
     });
 
-    // build & init
-    buildTree();
-    applyZoom();
+// Evento del select
+if (generationFilterSelect) {
+  generationFilterSelect.addEventListener("change", (e) => {
+    const value = e.target.value;
+    applyGenerationFilter(value);
+  });
+}
+
+// Arrancar todo
+populateGenerationFilter();
+buildTree();
+applyZoom();
