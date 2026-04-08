@@ -10,39 +10,25 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root { --bg: #f0ece4; --surface: #fffdf8; --border: #ddd5c8; --text: #2c241d; --text-dim: #8a7e6e; --accent: #6f5b3e; --accent-light: #f5f0e6; --shadow: 0 2px 12px rgba(44,36,29,.08); --font: 'DM Sans', system-ui, sans-serif; --font-display: 'Playfair Display', Georgia, serif; }
     body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; padding: 24px; max-width: 900px; margin: 0 auto; }
-
     .list-header { display: flex; align-items: baseline; gap: 14px; margin-bottom: 20px; flex-wrap: wrap; }
     .list-header h1 { font-family: var(--font-display); font-size: 26px; font-weight: 800; color: var(--accent); }
     .list-nav { display: flex; gap: 8px; }
     .list-link { font-size: 12px; font-weight: 600; color: var(--accent); text-decoration: none; background: var(--accent-light); padding: 5px 12px; border-radius: 999px; border: 1px solid var(--border); transition: .15s; }
     .list-link:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
-
-    /* Filters */
     .list-controls { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
     .list-controls label { font-size: 12px; color: var(--text-dim); font-weight: 600; display: flex; align-items: center; gap: 5px; }
-    .list-controls select, .list-controls input {
-      font-family: var(--font); font-size: 13px; padding: 6px 10px; border-radius: 8px;
-      border: 1px solid var(--border); background: var(--surface); color: var(--text);
-    }
+    .list-controls select, .list-controls input { font-family: var(--font); font-size: 13px; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); }
     .list-controls input { width: 180px; }
     .list-count { font-size: 12px; color: var(--text-dim); margin-left: auto; }
-
-    /* Table */
     .list-card { background: var(--surface); border-radius: 16px; box-shadow: var(--shadow); overflow: hidden; }
     .list-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    .list-table th {
-      text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: .08em; color: var(--text-dim); padding: 12px 14px;
-      border-bottom: 2px solid var(--border); cursor: pointer; user-select: none;
-      transition: color .15s; white-space: nowrap;
-    }
+    .list-table th { text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-dim); padding: 12px 14px; border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; transition: color .15s; white-space: nowrap; }
     .list-table th:hover { color: var(--accent); }
     .list-table th .sort-arrow { font-size: 10px; margin-left: 4px; opacity: .4; }
     .list-table th.active .sort-arrow { opacity: 1; color: var(--accent); }
     .list-table td { padding: 10px 14px; border-bottom: 1px solid #f0ece4; vertical-align: middle; }
     .list-table tr:hover td { background: var(--accent-light); }
     .list-table tr.deceased td { opacity: .55; }
-
     .list-avatar { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 800; font-size: 13px; flex-shrink: 0; border: 2px solid var(--surface); box-shadow: 0 0 0 1.5px var(--accent); }
     .list-name-cell { display: flex; align-items: center; gap: 10px; }
     .list-name { font-weight: 600; }
@@ -50,198 +36,68 @@
     .list-tag { display: inline-flex; padding: 1px 7px; border-radius: 999px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
     .list-tag-burgada { background: var(--accent-light); color: var(--accent); }
     .list-tag-spouse { background: #f0ece4; color: #8a7e6e; border: 1px dashed #ccc5b8; }
-
     .list-empty { padding: 40px; text-align: center; color: var(--text-dim); font-size: 14px; }
-
-    @media (max-width: 600px) {
-      body { padding: 14px; }
-      .list-controls { flex-direction: column; align-items: flex-start; }
-      .list-table { font-size: 12px; }
-      .list-table th, .list-table td { padding: 8px 8px; }
-    }
+    .hidden { display: none !important; }
+    @media (max-width: 600px) { body { padding: 14px; } .list-controls { flex-direction: column; align-items: flex-start; } .list-table { font-size: 12px; } .list-table th, .list-table td { padding: 8px 8px; } }
   </style>
 </head>
 <body>
-
+<script src="auth.js"></script>
   <div class="list-header">
     <h1>📋 Listado</h1>
-    <div class="list-nav">
-      <a href="index.html" class="list-link">← Árbol</a>
-      <a href="stats.html" class="list-link">📊 Estadísticas</a>
-    </div>
+    <div class="list-nav"><a href="index.html" class="list-link">← Árbol</a><a href="stats.html" class="list-link">📊 Estadísticas</a></div>
   </div>
-
   <div class="list-controls">
-    <label>Generación
-      <select id="filter-gen"><option value="all">Todas</option></select>
-    </label>
-    <label>Tipo
-      <select id="filter-type">
-        <option value="all">Todos</option>
-        <option value="burgada">Burgada</option>
-        <option value="pareja">Parejas</option>
-      </select>
-    </label>
-    <label>Sexo
-      <select id="filter-gender">
-        <option value="all">Todos</option>
-        <option value="M">Hombres</option>
-        <option value="F">Mujeres</option>
-      </select>
-    </label>
-    <label>
-      <input id="filter-search" type="text" placeholder="Buscar nombre…" />
-    </label>
+    <label>Generación <select id="filter-gen"><option value="all">Todas</option></select></label>
+    <label>Tipo <select id="filter-type"><option value="all">Todos</option><option value="burgada">Burgada</option><option value="pareja">Parejas</option></select></label>
+    <label>Sexo <select id="filter-gender"><option value="all">Todos</option><option value="M">Hombres</option><option value="F">Mujeres</option></select></label>
+    <label><input id="filter-search" type="text" placeholder="Buscar nombre…" /></label>
     <span class="list-count" id="list-count"></span>
   </div>
-
   <div class="list-card">
     <table class="list-table">
-      <thead>
-        <tr>
-          <th data-col="name">Nombre <span class="sort-arrow">▾</span></th>
-          <th data-col="generation">Gen <span class="sort-arrow">▾</span></th>
-          <th data-col="birthDate">Nacimiento <span class="sort-arrow">▾</span></th>
-          <th data-col="type">Tipo <span class="sort-arrow">▾</span></th>
-          <th data-col="gender">Sexo <span class="sort-arrow">▾</span></th>
-          <th data-col="status">Estado <span class="sort-arrow">▾</span></th>
-        </tr>
-      </thead>
+      <thead><tr>
+        <th data-col="name">Nombre <span class="sort-arrow">▾</span></th>
+        <th data-col="generation">Gen <span class="sort-arrow">▾</span></th>
+        <th data-col="birthDate">Nacimiento <span class="sort-arrow">▾</span></th>
+        <th data-col="type">Tipo <span class="sort-arrow">▾</span></th>
+        <th data-col="gender">Sexo <span class="sort-arrow">▾</span></th>
+        <th data-col="status">Estado <span class="sort-arrow">▾</span></th>
+      </tr></thead>
       <tbody id="list-body"></tbody>
     </table>
     <div class="list-empty hidden" id="list-empty">No se encontraron personas con estos filtros.</div>
   </div>
-
   <script>
-    const GEN_COLORS = ['#6f5b3e','#4a7c59','#3e6b8a','#7c5a8a','#8a5a5a','#5a7c8a','#7a6b3e','#3e8a7c'];
-    let people = [];
-    let sortCol = 'birthDate', sortDir = 'asc';
-
-    function isBurgada(p) { return p.parentId != null || (p.parentId == null && !p.partnerId); }
-
-    function getInitials(name) {
-      if (!name) return '?';
-      const parts = name.trim().split(/\s+/);
-      return parts.length === 1 ? parts[0][0].toUpperCase() : (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-    }
-
-    function parseDateForSort(dateStr) {
-      if (!dateStr) return null;
-      // Try parsing yyyy-mm-dd, dd/mm/yyyy, yyyy, etc
-      const d = new Date(dateStr);
-      if (!isNaN(d.getTime())) return d.getTime();
-      // Try dd/mm/yyyy
-      const parts = dateStr.split('/');
-      if (parts.length === 3) { const d2 = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`); if (!isNaN(d2.getTime())) return d2.getTime(); }
-      // Try just year
-      const y = parseInt(dateStr); if (!isNaN(y)) return new Date(y, 0, 1).getTime();
-      return null;
-    }
-
-    function getSortValue(p) {
-      switch (sortCol) {
-        case 'name': return (p.name || '').toLowerCase();
-        case 'generation': return p.generation ?? 999;
-        case 'birthDate': return parseDateForSort(p.birthDate);
-        case 'type': return isBurgada(p) ? 0 : 1;
-        case 'gender': return p.gender || 'Z';
-        case 'status': return p.deathDate ? 1 : 0;
-        default: return 0;
-      }
-    }
-
-    function filterAndSort() {
-      const genF = document.getElementById('filter-gen').value;
-      const typeF = document.getElementById('filter-type').value;
-      const genderF = document.getElementById('filter-gender').value;
-      const search = document.getElementById('filter-search').value.toLowerCase().trim();
-
-      let list = people.filter(p => {
-        if (genF !== 'all' && String(p.generation ?? '') !== genF) return false;
-        if (typeF === 'burgada' && !isBurgada(p)) return false;
-        if (typeF === 'pareja' && isBurgada(p)) return false;
-        if (genderF !== 'all' && p.gender !== genderF) return false;
-        if (search && !(p.name || '').toLowerCase().includes(search)) return false;
-        return true;
-      });
-
-      list.sort((a, b) => {
-        let va = getSortValue(a), vb = getSortValue(b);
-        // Nulls last
-        if (va == null && vb == null) return 0;
-        if (va == null) return 1;
-        if (vb == null) return -1;
-        if (va < vb) return sortDir === 'asc' ? -1 : 1;
-        if (va > vb) return sortDir === 'asc' ? 1 : -1;
-        return 0;
-      });
-
+    const GEN_COLORS=['#6f5b3e','#4a7c59','#3e6b8a','#7c5a8a','#8a5a5a','#5a7c8a','#7a6b3e','#3e8a7c'];
+    let people=[], sortCol='birthDate', sortDir='asc';
+    function isBurgada(p){return p.parentId!=null||(p.parentId==null&&!p.partnerId);}
+    function getInitials(n){if(!n)return'?';const p=n.trim().split(/\s+/);return p.length===1?p[0][0].toUpperCase():(p[0][0]+p[p.length-1][0]).toUpperCase();}
+    function parseDateForSort(s){if(!s)return null;const d=new Date(s);if(!isNaN(d.getTime()))return d.getTime();const p=s.split('/');if(p.length===3){const d2=new Date(`${p[2]}-${p[1]}-${p[0]}`);if(!isNaN(d2.getTime()))return d2.getTime();}const y=parseInt(s);if(!isNaN(y))return new Date(y,0,1).getTime();return null;}
+    function getSortValue(p){switch(sortCol){case'name':return(p.name||'').toLowerCase();case'generation':return p.generation??999;case'birthDate':return parseDateForSort(p.birthDate);case'type':return isBurgada(p)?0:1;case'gender':return p.gender||'Z';case'status':return p.deathDate?1:0;default:return 0;}}
+    function filterAndSort(){
+      const gF=document.getElementById('filter-gen').value, tF=document.getElementById('filter-type').value, gnF=document.getElementById('filter-gender').value, s=document.getElementById('filter-search').value.toLowerCase().trim();
+      let list=people.filter(p=>{if(gF!=='all'&&String(p.generation??'')!==gF)return false;if(tF==='burgada'&&!isBurgada(p))return false;if(tF==='pareja'&&isBurgada(p))return false;if(gnF!=='all'&&p.gender!==gnF)return false;if(s&&!(p.name||'').toLowerCase().includes(s))return false;return true;});
+      list.sort((a,b)=>{let va=getSortValue(a),vb=getSortValue(b);if(va==null&&vb==null)return 0;if(va==null)return 1;if(vb==null)return-1;if(va<vb)return sortDir==='asc'?-1:1;if(va>vb)return sortDir==='asc'?1:-1;return 0;});
       renderList(list);
     }
-
-    function renderList(list) {
-      const tbody = document.getElementById('list-body');
-      const empty = document.getElementById('list-empty');
-      tbody.innerHTML = '';
-
-      document.getElementById('list-count').textContent = `${list.length} personas`;
-
-      if (!list.length) { empty.classList.remove('hidden'); return; }
-      empty.classList.add('hidden');
-
-      list.forEach(p => {
-        const tr = document.createElement('tr');
-        if (p.deathDate) tr.className = 'deceased';
-        const gen = p.generation ?? 0;
-        const color = GEN_COLORS[gen % GEN_COLORS.length];
-        const bg = color + '18';
-        const burg = isBurgada(p);
-        const genderLabel = p.gender === 'M' ? '♂' : p.gender === 'F' ? '♀' : '—';
-
-        tr.innerHTML = `
-          <td><div class="list-name-cell"><div class="list-avatar" style="background:${bg};color:${color}">${getInitials(p.name)}</div><span class="list-name">${p.name}</span></div></td>
-          <td><span class="list-gen-dot" style="background:${color}"></span>${gen}</td>
-          <td>${p.birthDate || '—'}</td>
-          <td><span class="list-tag ${burg ? 'list-tag-burgada' : 'list-tag-spouse'}">${burg ? 'Burgada' : 'Pareja'}</span></td>
-          <td>${genderLabel}</td>
-          <td>${p.deathDate ? '✝ ' + p.deathDate : 'Vivo'}</td>
-        `;
-        tbody.appendChild(tr);
-      });
+    function renderList(list){
+      const tbody=document.getElementById('list-body'),empty=document.getElementById('list-empty');tbody.innerHTML='';
+      document.getElementById('list-count').textContent=`${list.length} personas`;
+      if(!list.length){empty.classList.remove('hidden');return;}empty.classList.add('hidden');
+      list.forEach(p=>{const tr=document.createElement('tr');if(p.deathDate)tr.className='deceased';const g=p.generation??0,c=GEN_COLORS[g%GEN_COLORS.length],bg=c+'18',burg=isBurgada(p),gl=p.gender==='M'?'♂':p.gender==='F'?'♀':'—';
+      tr.innerHTML=`<td><div class="list-name-cell"><div class="list-avatar" style="background:${bg};color:${c}">${getInitials(p.name)}</div><span class="list-name">${p.name}</span></div></td><td><span class="list-gen-dot" style="background:${c}"></span>${g}</td><td>${p.birthDate||'—'}</td><td><span class="list-tag ${burg?'list-tag-burgada':'list-tag-spouse'}">${burg?'Burgada':'Pareja'}</span></td><td>${gl}</td><td>${p.deathDate?'✝ '+p.deathDate:'Vivo'}</td>`;
+      tbody.appendChild(tr);});
     }
-
-    async function init() {
-      people = await (await fetch('data/people.json')).json();
-
-      // Populate generation filter
-      const gens = [...new Set(people.map(p => p.generation).filter(g => g != null))].sort((a, b) => a - b);
-      const sel = document.getElementById('filter-gen');
-      gens.forEach(g => { const o = document.createElement('option'); o.value = String(g); o.textContent = `Gen ${g}`; sel.appendChild(o); });
-
-      // Sort headers
-      document.querySelectorAll('.list-table th[data-col]').forEach(th => {
-        th.addEventListener('click', () => {
-          const col = th.dataset.col;
-          if (sortCol === col) sortDir = sortDir === 'asc' ? 'desc' : 'asc';
-          else { sortCol = col; sortDir = 'asc'; }
-          // Update active state
-          document.querySelectorAll('.list-table th').forEach(h => h.classList.remove('active'));
-          th.classList.add('active');
-          th.querySelector('.sort-arrow').textContent = sortDir === 'asc' ? '▴' : '▾';
-          filterAndSort();
-        });
-      });
-
-      // Filters
-      ['filter-gen', 'filter-type', 'filter-gender'].forEach(id => document.getElementById(id).addEventListener('change', filterAndSort));
-      document.getElementById('filter-search').addEventListener('input', filterAndSort);
-
-      // Initial sort: oldest first by birth date
-      sortCol = 'birthDate'; sortDir = 'asc';
-      document.querySelector('th[data-col="birthDate"]').classList.add('active');
-      filterAndSort();
+    async function init(){
+      people=await(await fetch('data/people.json')).json();
+      const gens=[...new Set(people.map(p=>p.generation).filter(g=>g!=null))].sort((a,b)=>a-b);
+      const sel=document.getElementById('filter-gen');gens.forEach(g=>{const o=document.createElement('option');o.value=String(g);o.textContent=`Gen ${g}`;sel.appendChild(o);});
+      document.querySelectorAll('.list-table th[data-col]').forEach(th=>{th.addEventListener('click',()=>{const col=th.dataset.col;if(sortCol===col)sortDir=sortDir==='asc'?'desc':'asc';else{sortCol=col;sortDir='asc';}document.querySelectorAll('.list-table th').forEach(h=>h.classList.remove('active'));th.classList.add('active');th.querySelector('.sort-arrow').textContent=sortDir==='asc'?'▴':'▾';filterAndSort();});});
+      ['filter-gen','filter-type','filter-gender'].forEach(id=>document.getElementById(id).addEventListener('change',filterAndSort));
+      document.getElementById('filter-search').addEventListener('input',filterAndSort);
+      sortCol='birthDate';sortDir='asc';document.querySelector('th[data-col="birthDate"]').classList.add('active');filterAndSort();
     }
-
     init();
   </script>
 </body>
