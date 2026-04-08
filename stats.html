@@ -8,39 +8,30 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #f0ece4; --surface: #fffdf8; --border: #ddd5c8;
-      --text: #2c241d; --text-dim: #8a7e6e; --accent: #6f5b3e;
-      --accent-light: #f5f0e6; --shadow: 0 2px 12px rgba(44,36,29,.08);
-      --font: 'DM Sans', system-ui, sans-serif;
-      --font-display: 'Playfair Display', Georgia, serif;
-    }
+    :root { --bg: #f0ece4; --surface: #fffdf8; --border: #ddd5c8; --text: #2c241d; --text-dim: #8a7e6e; --accent: #6f5b3e; --accent-light: #f5f0e6; --shadow: 0 2px 12px rgba(44,36,29,.08); --font: 'DM Sans', system-ui, sans-serif; --font-display: 'Playfair Display', Georgia, serif; }
     body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; padding: 24px; }
-
-    .stats-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
+    .stats-header { display: flex; align-items: baseline; gap: 14px; margin-bottom: 28px; flex-wrap: wrap; }
     .stats-header h1 { font-family: var(--font-display); font-size: 26px; font-weight: 800; color: var(--accent); }
-    .stats-back { font-size: 13px; font-weight: 600; color: var(--accent); text-decoration: none; background: var(--accent-light); padding: 5px 12px; border-radius: 999px; border: 1px solid var(--border); transition: .15s; }
-    .stats-back:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .stats-nav { display: flex; gap: 8px; }
+    .stats-link { font-size: 12px; font-weight: 600; color: var(--accent); text-decoration: none; background: var(--accent-light); padding: 5px 12px; border-radius: 999px; border: 1px solid var(--border); transition: .15s; }
+    .stats-link:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-    /* KPI row */
-    .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; margin-bottom: 28px; }
+    .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 14px; margin-bottom: 28px; }
     .kpi { background: var(--surface); border-radius: 14px; padding: 18px 16px; box-shadow: var(--shadow); text-align: center; }
     .kpi-value { font-family: var(--font-display); font-size: 32px; font-weight: 800; color: var(--accent); }
     .kpi-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-dim); margin-top: 4px; }
 
-    /* Chart grid */
     .charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
     .chart-card { background: var(--surface); border-radius: 16px; padding: 22px; box-shadow: var(--shadow); }
     .chart-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 16px; text-transform: uppercase; letter-spacing: .04em; }
 
-    /* Bar chart */
-    .bar-chart { display: flex; align-items: flex-end; gap: 10px; height: 180px; padding-top: 10px; }
-    .bar-col { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; }
-    .bar-fill { width: 100%; border-radius: 8px 8px 4px 4px; transition: height .6s ease; min-height: 4px; position: relative; }
-    .bar-val { font-size: 11px; font-weight: 700; color: var(--text); }
-    .bar-label { font-size: 10px; font-weight: 600; color: var(--text-dim); text-align: center; }
+    /* Bar chart — fixed proportions */
+    .bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 200px; }
+    .bar-col { display: flex; flex-direction: column; align-items: center; flex: 1; justify-content: flex-end; height: 100%; }
+    .bar-val { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .bar-fill { width: 100%; max-width: 48px; min-width: 24px; border-radius: 8px 8px 4px 4px; min-height: 4px; }
+    .bar-label { font-size: 11px; font-weight: 600; color: var(--text-dim); text-align: center; margin-top: 8px; }
 
-    /* Donut chart */
     .donut-wrap { display: flex; align-items: center; gap: 24px; }
     .donut-svg { width: 140px; height: 140px; flex-shrink: 0; }
     .donut-legend { display: flex; flex-direction: column; gap: 8px; }
@@ -48,23 +39,22 @@
     .donut-swatch { width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0; }
     .donut-pct { font-weight: 700; min-width: 36px; }
 
-    /* Table */
     .gen-table { width: 100%; border-collapse: collapse; font-size: 13px; }
     .gen-table th { text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-dim); padding: 8px 10px; border-bottom: 2px solid var(--border); }
     .gen-table td { padding: 8px 10px; border-bottom: 1px solid #f0ece4; }
     .gen-table tr:hover td { background: var(--accent-light); }
     .gen-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 6px; vertical-align: middle; }
-
     @media (max-width: 600px) { body { padding: 14px; } .charts { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
-
   <div class="stats-header">
     <h1>📊 Estadísticas</h1>
-    <a href="index.html" class="stats-back">← Volver al árbol</a>
+    <div class="stats-nav">
+      <a href="index.html" class="stats-link">← Árbol</a>
+      <a href="list.html" class="stats-link">📋 Listado</a>
+    </div>
   </div>
-
   <div class="kpi-row" id="kpi-row"></div>
   <div class="charts" id="charts"></div>
 
@@ -72,144 +62,84 @@
     const GEN_COLORS = ['#6f5b3e','#4a7c59','#3e6b8a','#7c5a8a','#8a5a5a','#5a7c8a','#7a6b3e','#3e8a7c'];
 
     async function init() {
-      const res = await fetch('data/people.json');
-      const people = await res.json();
-
-      const total = people.length;
-      const alive = people.filter(p => !p.deathDate).length;
-      const deceased = total - alive;
-      const male = people.filter(p => p.gender === 'M').length;
-      const female = people.filter(p => p.gender === 'F').length;
-      const unknown = total - male - female;
-      const burgada = people.filter(p => p.parentId != null || (p.parentId == null && !p.partnerId)).length;
-      const spouses = total - burgada;
-      const gens = {};
-      people.forEach(p => { const g = p.generation ?? 0; gens[g] = (gens[g] || 0) + 1; });
+      const people = await (await fetch('data/people.json')).json();
+      const total = people.length, alive = people.filter(p => !p.deathDate).length, deceased = total - alive;
+      const male = people.filter(p => p.gender === 'M').length, female = people.filter(p => p.gender === 'F').length, unknown = total - male - female;
+      const burgada = people.filter(p => p.parentId != null || (p.parentId == null && !p.partnerId)).length, spouses = total - burgada;
+      const gens = {}; people.forEach(p => { const g = p.generation ?? 0; gens[g] = (gens[g] || 0) + 1; });
       const genKeys = Object.keys(gens).map(Number).sort((a, b) => a - b);
-      const maxGen = Math.max(...Object.values(gens));
+      const maxCount = Math.max(...Object.values(gens));
 
-      // ── KPIs ──
+      // KPIs
       const kpiRow = document.getElementById('kpi-row');
-      const kpis = [
-        { value: total, label: 'Total personas' },
-        { value: genKeys.length, label: 'Generaciones' },
-        { value: burgada, label: 'Familia directa' },
-        { value: spouses, label: 'Parejas' },
-        { value: alive, label: 'Vivos' },
-        { value: deceased, label: 'Fallecidos' },
-      ];
-      kpis.forEach(k => {
-        const div = document.createElement('div');
-        div.className = 'kpi';
-        div.innerHTML = `<div class="kpi-value">${k.value}</div><div class="kpi-label">${k.label}</div>`;
-        kpiRow.appendChild(div);
+      [{v:total,l:'Total personas'},{v:genKeys.length,l:'Generaciones'},{v:burgada,l:'Familia directa'},{v:spouses,l:'Parejas'},{v:alive,l:'Vivos'},{v:deceased,l:'Fallecidos'}].forEach(k => {
+        const d = document.createElement('div'); d.className = 'kpi';
+        d.innerHTML = `<div class="kpi-value">${k.v}</div><div class="kpi-label">${k.l}</div>`;
+        kpiRow.appendChild(d);
       });
 
       const charts = document.getElementById('charts');
 
-      // ── Bar: Personas por generación ──
-      const barCard = document.createElement('div');
-      barCard.className = 'chart-card';
+      // Bar chart — height proportional to max
+      const barCard = document.createElement('div'); barCard.className = 'chart-card';
       barCard.innerHTML = '<div class="chart-title">Personas por generación</div>';
-      const barChart = document.createElement('div');
-      barChart.className = 'bar-chart';
+      const barChart = document.createElement('div'); barChart.className = 'bar-chart';
+      const maxH = 160; // max bar height in px
       genKeys.forEach(g => {
         const count = gens[g];
-        const pct = (count / maxGen) * 100;
+        const h = Math.max(6, (count / maxCount) * maxH);
         const color = GEN_COLORS[g % GEN_COLORS.length];
-        const col = document.createElement('div');
-        col.className = 'bar-col';
-        col.innerHTML = `<div class="bar-val">${count}</div><div class="bar-fill" style="height:${pct}%;background:${color}"></div><div class="bar-label">Gen ${g}</div>`;
+        const col = document.createElement('div'); col.className = 'bar-col';
+        col.innerHTML = `<div class="bar-val">${count}</div><div class="bar-fill" style="height:${h}px;background:${color}"></div><div class="bar-label">Gen ${g}</div>`;
         barChart.appendChild(col);
       });
-      barCard.appendChild(barChart);
-      charts.appendChild(barCard);
+      barCard.appendChild(barChart); charts.appendChild(barCard);
 
-      // ── Donut: Sexo ──
+      // Donuts
       charts.appendChild(makeDonut('Distribución por sexo', [
         { label: 'Hombres', value: male, color: '#3e6b8a' },
         { label: 'Mujeres', value: female, color: '#8a5a5a' },
         ...(unknown > 0 ? [{ label: 'Sin especificar', value: unknown, color: '#b8ad98' }] : []),
       ]));
-
-      // ── Donut: Vivos vs Fallecidos ──
       charts.appendChild(makeDonut('Vivos vs fallecidos', [
         { label: 'Vivos', value: alive, color: '#4a7c59' },
         { label: 'Fallecidos', value: deceased, color: '#8a7e6e' },
       ]));
-
-      // ── Donut: Burgada vs Parejas ──
       charts.appendChild(makeDonut('Familia directa vs parejas', [
         { label: 'Burgada', value: burgada, color: '#6f5b3e' },
         { label: 'Parejas', value: spouses, color: '#b8ad98' },
       ]));
 
-      // ── Table: Detalle por generación ──
-      const tableCard = document.createElement('div');
-      tableCard.className = 'chart-card';
-      tableCard.style.gridColumn = '1 / -1';
-      tableCard.innerHTML = '<div class="chart-title">Detalle por generación</div>';
-      const table = document.createElement('table');
-      table.className = 'gen-table';
-      table.innerHTML = `<thead><tr><th>Generación</th><th>Personas</th><th>Hombres</th><th>Mujeres</th><th>Vivos</th><th>Fallecidos</th></tr></thead>`;
-      const tbody = document.createElement('tbody');
+      // Table
+      const tc = document.createElement('div'); tc.className = 'chart-card'; tc.style.gridColumn = '1 / -1';
+      tc.innerHTML = '<div class="chart-title">Detalle por generación</div>';
+      const t = document.createElement('table'); t.className = 'gen-table';
+      t.innerHTML = '<thead><tr><th>Generación</th><th>Personas</th><th>Hombres</th><th>Mujeres</th><th>Vivos</th><th>Fallecidos</th></tr></thead>';
+      const tb = document.createElement('tbody');
       genKeys.forEach(g => {
         const gp = people.filter(p => (p.generation ?? 0) === g);
         const color = GEN_COLORS[g % GEN_COLORS.length];
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td><span class="gen-dot" style="background:${color}"></span>Gen ${g}</td>
-          <td>${gp.length}</td>
-          <td>${gp.filter(p => p.gender === 'M').length}</td>
-          <td>${gp.filter(p => p.gender === 'F').length}</td>
-          <td>${gp.filter(p => !p.deathDate).length}</td>
-          <td>${gp.filter(p => !!p.deathDate).length}</td>`;
-        tbody.appendChild(tr);
+        tr.innerHTML = `<td><span class="gen-dot" style="background:${color}"></span>Gen ${g}</td><td>${gp.length}</td><td>${gp.filter(p=>p.gender==='M').length}</td><td>${gp.filter(p=>p.gender==='F').length}</td><td>${gp.filter(p=>!p.deathDate).length}</td><td>${gp.filter(p=>!!p.deathDate).length}</td>`;
+        tb.appendChild(tr);
       });
-      table.appendChild(tbody);
-      tableCard.appendChild(table);
-      charts.appendChild(tableCard);
+      t.appendChild(tb); tc.appendChild(t); charts.appendChild(tc);
     }
 
     function makeDonut(title, segments) {
-      const card = document.createElement('div');
-      card.className = 'chart-card';
+      const card = document.createElement('div'); card.className = 'chart-card';
       card.innerHTML = `<div class="chart-title">${title}</div>`;
-
       const total = segments.reduce((s, seg) => s + seg.value, 0);
-      if (total === 0) { card.innerHTML += '<div style="color:var(--text-dim);font-size:13px">Sin datos</div>'; return card; }
-
-      const wrap = document.createElement('div');
-      wrap.className = 'donut-wrap';
-
-      // SVG donut
-      const size = 140, cx = 70, cy = 70, r = 52, stroke = 24;
-      const circumference = 2 * Math.PI * r;
-      let offset = 0;
-
-      let paths = '';
-      segments.forEach(seg => {
-        const pct = seg.value / total;
-        const dashLen = pct * circumference;
-        const dashGap = circumference - dashLen;
-        paths += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${seg.color}" stroke-width="${stroke}" stroke-dasharray="${dashLen} ${dashGap}" stroke-dashoffset="${-offset}" transform="rotate(-90 ${cx} ${cy})" />`;
-        offset += dashLen;
-      });
-
-      const svgEl = document.createElement('div');
-      svgEl.innerHTML = `<svg class="donut-svg" viewBox="0 0 ${size} ${size}">${paths}
-        <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" font-family="'Playfair Display',serif" font-weight="800" font-size="22" fill="var(--accent)">${total}</text>
-      </svg>`;
-
-      const legend = document.createElement('div');
-      legend.className = 'donut-legend';
-      segments.forEach(seg => {
-        const pct = total > 0 ? Math.round((seg.value / total) * 100) : 0;
-        legend.innerHTML += `<div class="donut-legend-item"><div class="donut-swatch" style="background:${seg.color}"></div><span class="donut-pct">${pct}%</span><span>${seg.label} (${seg.value})</span></div>`;
-      });
-
-      wrap.appendChild(svgEl.firstElementChild);
-      wrap.appendChild(legend);
-      card.appendChild(wrap);
+      if (!total) { card.innerHTML += '<div style="color:var(--text-dim);font-size:13px">Sin datos</div>'; return card; }
+      const wrap = document.createElement('div'); wrap.className = 'donut-wrap';
+      const cx = 70, cy = 70, r = 52, sw = 24, circ = 2 * Math.PI * r;
+      let off = 0, paths = '';
+      segments.forEach(seg => { const dl = (seg.value / total) * circ; paths += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${seg.color}" stroke-width="${sw}" stroke-dasharray="${dl} ${circ - dl}" stroke-dashoffset="${-off}" transform="rotate(-90 ${cx} ${cy})" />`; off += dl; });
+      const svgHTML = `<svg class="donut-svg" viewBox="0 0 140 140">${paths}<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" font-family="'Playfair Display',serif" font-weight="800" font-size="22" fill="var(--accent)">${total}</text></svg>`;
+      const legend = document.createElement('div'); legend.className = 'donut-legend';
+      segments.forEach(seg => { legend.innerHTML += `<div class="donut-legend-item"><div class="donut-swatch" style="background:${seg.color}"></div><span class="donut-pct">${Math.round((seg.value/total)*100)}%</span><span>${seg.label} (${seg.value})</span></div>`; });
+      const tmp = document.createElement('div'); tmp.innerHTML = svgHTML;
+      wrap.appendChild(tmp.firstElementChild); wrap.appendChild(legend); card.appendChild(wrap);
       return card;
     }
 
