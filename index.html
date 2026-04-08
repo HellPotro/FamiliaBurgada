@@ -12,7 +12,7 @@
 
 <div class="ft-layout">
 
-  <!-- ── Header ──────────────────────────────────────────────────── -->
+  <!-- Header -->
   <div class="ft-header">
     <div class="ft-header-left">
       <h1 class="ft-title">Familia Burgada</h1>
@@ -31,10 +31,10 @@
     </div>
   </div>
 
-  <!-- ── Body: sidebar + viewport ────────────────────────────────── -->
+  <!-- Body -->
   <div class="ft-body">
 
-    <!-- Sidebar zoom -->
+    <!-- Sidebar -->
     <div class="ft-sidebar">
       <button class="ft-zoom-btn" id="zoom-in" title="Acercar">+</button>
       <span class="ft-zoom-val" id="zoom-label">100 %</span>
@@ -52,12 +52,12 @@
       <div class="ft-canvas" id="ft-canvas"></div>
     </div>
 
-    <!-- Modal detalle -->
+    <!-- Modal -->
     <div class="ft-modal-backdrop" id="ft-modal-backdrop">
       <div class="ft-modal">
         <button class="ft-modal-close" id="ft-modal-close">✕</button>
         <div class="ft-modal-header">
-          <img id="modal-photo" class="ft-modal-photo" src="" alt="" />
+          <div class="ft-modal-avatar" id="modal-avatar"></div>
           <div>
             <div class="ft-modal-badge" id="modal-relation"></div>
             <h2 id="modal-name"></h2>
@@ -70,14 +70,17 @@
           <div class="ft-modal-card"><div class="ft-modal-label">Lugar de nacimiento</div><div class="ft-modal-value" id="modal-birthplace"></div></div>
           <div class="ft-modal-card"><div class="ft-modal-label">Pareja</div><div class="ft-modal-value" id="modal-spouse"></div></div>
           <div class="ft-modal-card"><div class="ft-modal-label">Hijos</div><div class="ft-modal-value" id="modal-children"></div></div>
-          <div class="ft-modal-card"><div class="ft-modal-label">Notas</div><div class="ft-modal-value" id="modal-notes"></div></div>
+          <div class="ft-modal-card" style="grid-column:1/-1"><div class="ft-modal-label">Notas</div><div class="ft-modal-value" id="modal-notes"></div></div>
+        </div>
+        <div class="ft-modal-actions">
+          <button class="ft-btn ft-btn-outline" id="modal-propose-change">📝 Proponer cambio</button>
         </div>
       </div>
     </div>
 
   </div>
 
-  <!-- ── Panel solicitud cambio ──────────────────────────────────── -->
+  <!-- Request panel -->
   <div class="ft-request-panel">
     <div class="ft-request-toggle" id="request-toggle">
       <span>📝</span> Solicitar cambio de información
