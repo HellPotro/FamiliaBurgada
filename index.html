@@ -9,29 +9,26 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-
 <div class="ft-layout">
-
   <div class="ft-header">
     <div class="ft-header-left">
       <h1 class="ft-title">Familia Burgada</h1>
       <span class="ft-count" id="ft-count"></span>
-      <a href="stats.html" class="ft-stats-link">📊 Estadísticas</a>
+      <a href="stats.html" class="ft-nav-link">📊 Estadísticas</a>
+      <a href="list.html" class="ft-nav-link">📋 Listado</a>
     </div>
     <div class="ft-header-right">
-      <label class="ft-gen-filter">
-        Generación
+      <label class="ft-gen-filter">Generación
         <select id="generation-filter"><option value="all">Todas</option></select>
       </label>
-      <div class="ft-search">
-        <input id="ft-search-input" class="ft-input" placeholder="Buscar persona…" />
-      </div>
+      <input id="ft-search-input" class="ft-input" placeholder="Buscar persona…" />
     </div>
   </div>
 
-  <div class="ft-lineage-bar hidden" id="ft-lineage-bar">
-    <span id="ft-lineage-text"></span>
-    <button class="ft-btn-small" id="ft-lineage-clear">✕ Quitar linaje</button>
+  <!-- Lineage / descendants bar -->
+  <div class="ft-filter-bar hidden" id="ft-filter-bar">
+    <span id="ft-filter-text"></span>
+    <button class="ft-btn-small" id="ft-filter-clear">✕ Quitar</button>
   </div>
 
   <div class="ft-body">
@@ -51,7 +48,6 @@
       <div class="ft-canvas" id="ft-canvas"></div>
     </div>
 
-    <!-- Modal -->
     <div class="ft-modal-backdrop" id="ft-modal-backdrop">
       <div class="ft-modal">
         <button class="ft-modal-close" id="ft-modal-close">✕</button>
@@ -74,54 +70,32 @@
         </div>
         <div class="ft-modal-actions">
           <button class="ft-btn-outline" id="modal-trace-lineage">🌳 Ver linaje</button>
+          <button class="ft-btn-outline" id="modal-trace-descendants">👨‍👩‍👧‍👦 Descendientes</button>
           <button class="ft-btn-outline" id="modal-propose-change">📝 Proponer cambio</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Request panel -->
   <div class="ft-request-panel">
     <div class="ft-request-toggle" id="request-toggle">
       <span>📝</span> Solicitar cambio de información
       <span class="ft-chevron" id="request-chevron">▾</span>
     </div>
     <div class="ft-request-body hidden" id="request-body">
-      <p class="ft-request-hint">
-        Rellena este formulario y se abrirá un email pre-rellenado para enviar la solicitud.
-      </p>
+      <p class="ft-request-hint">Rellena este formulario y se abrirá un email pre-rellenado para enviar la solicitud.</p>
       <form id="request-form">
-        <div>
-          <label for="req-reporter">Tu nombre</label>
-          <input id="req-reporter" type="text" placeholder="Ej: Ana Pérez" required />
+        <div><label for="req-reporter">Tu nombre</label><input id="req-reporter" type="text" placeholder="Ej: Ana Pérez" required /></div>
+        <div><label for="req-type">Tipo de cambio</label>
+          <select id="req-type" required><option value="">Selecciona…</option><option value="Modificar datos">Modificar datos</option><option value="Nuevo nacimiento">Nuevo nacimiento</option><option value="Fallecimiento">Fallecimiento</option><option value="Otro">Otro</option></select>
         </div>
-        <div>
-          <label for="req-type">Tipo de cambio</label>
-          <select id="req-type" required>
-            <option value="">Selecciona…</option>
-            <option value="Modificar datos">Modificar datos</option>
-            <option value="Nuevo nacimiento">Nuevo nacimiento</option>
-            <option value="Fallecimiento">Fallecimiento</option>
-            <option value="Otro">Otro</option>
-          </select>
-        </div>
-        <div>
-          <label for="req-person-name">Persona relacionada</label>
-          <input id="req-person-name" type="text" placeholder="Ej: María Isabel Burgada" />
-        </div>
-        <div style="grid-column:1/-1">
-          <label for="req-details">Detalles</label>
-          <textarea id="req-details" placeholder="Ej: Nuevo nacimiento: Nombre, fecha, padres…"></textarea>
-        </div>
-        <div class="ft-form-actions" style="grid-column:1/-1">
-          <button type="submit" class="ft-btn">✉ Enviar por email</button>
-        </div>
+        <div><label for="req-person-name">Persona relacionada</label><input id="req-person-name" type="text" placeholder="Ej: María Isabel Burgada" /></div>
+        <div style="grid-column:1/-1"><label for="req-details">Detalles</label><textarea id="req-details" placeholder="Ej: Nuevo nacimiento: Nombre, fecha, padres…"></textarea></div>
+        <div class="ft-form-actions" style="grid-column:1/-1"><button type="submit" class="ft-btn">✉ Enviar por email</button></div>
       </form>
     </div>
   </div>
-
 </div>
-
 <script src="script.js"></script>
 </body>
 </html>
