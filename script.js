@@ -1,6 +1,5 @@
 // ══════════════════════════════════════════════════════════════════════════
-// Familia Burgada — Script v2
-// Layout horizontal ↔ vertical, SVG bézier, zoom, colapso, búsqueda
+// Familia Burgada — Script v3
 // ══════════════════════════════════════════════════════════════════════════
 
 const CARD_W = 210;
@@ -31,10 +30,13 @@ let searchTerm = '';
 let orientation = 'vertical';
 let zoom = 1;
 
+// Map of personId → array of DOM elements (for search highlighting)
+let personElements = new Map();
+
 // ── Helpers ─────────────────────────────────────────────────────────────
 
-function isBurgada(person) { return person.parentId != null; }
-function isSpouse(person) { return person.parentId == null && person.partnerId != null; }
+function isBurgada(p) { return p.parentId != null; }
+function isSpouse(p)  { return p.parentId == null && p.partnerId != null; }
 
 function shouldRenderAsPrimary(person) {
   if (person.partnerId) {
@@ -55,6 +57,25 @@ function formatDates(person) {
   return d ? `${b} – ${d}` : `${b} –`;
 }
 
+function getInitials(name) {
+  if (!name) return '?';
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0][0].toUpperCase();
+  // First letter of first name + first letter of first surname
+  // Assumption: "María Isabel Burgada Palleiro" → "MB" (first name + first surname-like word)
+  // Simple: first + last
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+function avatarHTML(person, size) {
+  const s = size || 46;
+  if (person.photoUrl) {
+    return `<img class="ft-avatar-img" style="width:${s}px;height:${s}px" src="${person.photoUrl}" alt="${person.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+            <div class="ft-avatar-initials" style="width:${s}px;height:${s}px;display:none;background:${genStyle(person.generation).bg};color:${genStyle(person.generation).color}">${getInitials(person.name)}</div>`;
+  }
+  return `<div class="ft-avatar-initials" style="width:${s}px;height:${s}px;background:${genStyle(person.generation).bg};color:${genStyle(person.generation).color}">${getInitials(person.name)}</div>`;
+}
+
 // ── Load data ───────────────────────────────────────────────────────────
 async function loadPeople() {
   const res = await fetch('data/people.json');
@@ -72,7 +93,7 @@ async function loadPeople() {
   const sel = document.getElementById('generation-filter');
   gens.forEach(g => {
     const opt = document.createElement('option');
-    opt.value = g;
+    opt.value = String(g);
     opt.textContent = `Gen ${g}`;
     sel.appendChild(opt);
   });
@@ -92,20 +113,18 @@ function buildFamilyTree() {
 
 function buildSubTree(person) {
   const partner = person.partnerId ? peopleById.get(person.partnerId) : null;
-  let children = [];
   const ch1 = childrenByParentId.get(person.id) || [];
   const ch2 = partner ? (childrenByParentId.get(partner.id) || []) : [];
   const seen = new Set();
+  const children = [];
   [...ch1, ...ch2].forEach(c => { if (!seen.has(c.id)) { seen.add(c.id); children.push(c); } });
-  const primary = children.filter(shouldRenderAsPrimary);
 
-  // Burgada first in marriage
   let burgada = person, pareja = partner;
   if (partner && isSpouse(person) && isBurgada(partner)) { burgada = partner; pareja = person; }
 
   return {
     person: burgada, partner: pareja, isMarriage: !!pareja,
-    children: primary.map(c => buildSubTree(c)),
+    children: children.filter(shouldRenderAsPrimary).map(c => buildSubTree(c)),
     collapsed: false, generation: burgada.generation ?? 0,
   };
 }
@@ -113,7 +132,6 @@ function buildSubTree(person) {
 // ── Layout engine ───────────────────────────────────────────────────────
 
 function nodeH(n) { return n.isMarriage ? CARD_H_MARRIAGE : CARD_H_SINGLE; }
-
 function secSize(n) { return orientation === 'horizontal' ? nodeH(n) : CARD_W; }
 
 function computeSpread(node) {
@@ -126,7 +144,6 @@ function computeSpread(node) {
 
 function assignDepth(node, d = 0) { node.depth = d; node.children.forEach(c => assignDepth(c, d + 1)); }
 
-// Horizontal: depth→x, spread→y
 function assignPosH(node, yStart) {
   node.x = LEFT_PAD + node.depth * (CARD_W + COL_GAP);
   node.y = yStart + (node.spread - nodeH(node)) / 2;
@@ -136,7 +153,6 @@ function assignPosH(node, yStart) {
   for (const c of node.children) { assignPosH(c, cur); cur += c.spread + ROW_GAP; }
 }
 
-// Vertical: depth→y (cumulative), spread→x
 function assignPosV(node, xStart, yStart) {
   node.x = xStart + (node.spread - CARD_W) / 2;
   node.y = yStart;
@@ -162,14 +178,13 @@ function flatten(node, acc = []) {
 
 function createPersonCard(person) {
   const gen = genStyle(person.generation);
-  const photo = person.photoUrl || 'https://via.placeholder.com/46?text=' + encodeURIComponent((person.name || '?')[0]);
   const isFam = isBurgada(person) || (person.parentId == null && !person.partnerId);
   const tag = isFam
     ? `<span class="ft-burgada-tag" style="background:${gen.bg};color:${gen.color}">Burgada</span>`
     : `<span class="ft-spouse-tag">Pareja</span>`;
   return `
     <div class="ft-node-top">
-      <img class="ft-node-photo" src="${photo}" alt="${person.name}" onerror="this.src='https://via.placeholder.com/46'" />
+      <div class="ft-node-avatar">${avatarHTML(person, 46)}</div>
       <div class="ft-node-info">
         <div class="ft-node-name">${person.name}</div>
         <div class="ft-node-dates">${formatDates(person)}</div>
@@ -190,6 +205,12 @@ function makeCollapseBtn(node) {
   return btn;
 }
 
+/** Register a DOM element for a person (for search/filter) */
+function registerElement(personId, el) {
+  if (!personElements.has(personId)) personElements.set(personId, []);
+  personElements.get(personId).push(el);
+}
+
 function renderNode(node, canvas, order) {
   if (node.virtual) return;
   const gen = genStyle(node.generation);
@@ -203,10 +224,9 @@ function renderNode(node, canvas, order) {
     const c1 = document.createElement('article');
     c1.className = `ft-node ft-node-burgada ${node.person.deathDate ? 'ft-deceased' : ''}`;
     c1.style.borderTopColor = gen.color;
-    c1.dataset.personId = node.person.id;
-    c1.dataset.gen = node.person.generation ?? '';
     c1.innerHTML = createPersonCard(node.person);
     c1.addEventListener('click', e => { if (!e.target.closest('.ft-collapse-btn')) openModal(node.person); });
+    registerElement(node.person.id, c1);
 
     const ring = document.createElement('div');
     ring.className = 'ft-marriage-ring';
@@ -215,10 +235,9 @@ function renderNode(node, canvas, order) {
     const c2 = document.createElement('article');
     c2.className = `ft-node ft-node-spouse ${node.partner.deathDate ? 'ft-deceased' : ''}`;
     c2.style.borderTopColor = '#b8ad98';
-    c2.dataset.personId = node.partner.id;
-    c2.dataset.gen = node.partner.generation ?? '';
     c2.innerHTML = createPersonCard(node.partner);
     c2.addEventListener('click', e => { if (!e.target.closest('.ft-collapse-btn')) openModal(node.partner); });
+    registerElement(node.partner.id, c2);
 
     wrap.appendChild(c1);
     wrap.appendChild(ring);
@@ -226,6 +245,7 @@ function renderNode(node, canvas, order) {
     if (node.children.length) wrap.appendChild(makeCollapseBtn(node));
     canvas.appendChild(wrap);
     requestAnimationFrame(() => { c1.classList.add('ft-visible'); c2.classList.add('ft-visible'); });
+
   } else {
     const isFam = isBurgada(node.person) || (!node.person.partnerId && node.person.parentId == null);
     const el = document.createElement('article');
@@ -235,11 +255,10 @@ function renderNode(node, canvas, order) {
     el.style.top = `${node.y}px`;
     el.style.borderTopColor = gen.color;
     el.style.animationDelay = `${0.03 + order * 0.015}s`;
-    el.dataset.personId = node.person.id;
-    el.dataset.gen = node.person.generation ?? '';
     el.innerHTML = createPersonCard(node.person);
     if (node.children.length) el.appendChild(makeCollapseBtn(node));
     el.addEventListener('click', e => { if (!e.target.closest('.ft-collapse-btn')) openModal(node.person); });
+    registerElement(node.person.id, el);
     canvas.appendChild(el);
     requestAnimationFrame(() => el.classList.add('ft-visible'));
   }
@@ -255,15 +274,13 @@ function anchorOut(node) {
 }
 
 function anchorIn(node) {
-  const h = nodeH(node);
   return orientation === 'horizontal'
-    ? { x: node.x, y: node.y + h / 2 }
+    ? { x: node.x, y: node.y + nodeH(node) / 2 }
     : { x: node.x + CARD_W / 2, y: node.y };
 }
 
 function connectorPath(parent, child) {
-  const p = anchorOut(parent);
-  const c = anchorIn(child);
+  const p = anchorOut(parent), c = anchorIn(child);
   if (orientation === 'horizontal') {
     const mx = p.x + (c.x - p.x) * 0.45;
     return `M ${p.x} ${p.y} C ${mx} ${p.y}, ${mx} ${c.y}, ${c.x} ${c.y}`;
@@ -290,8 +307,8 @@ function renderLinks(node, svg) {
 // ── Level labels (horizontal only) ──────────────────────────────────────
 
 function renderLevelLabels(depthCount) {
-  const bar = document.querySelector('.ft-level-bar');
-  if (orientation === 'vertical') { if (bar) bar.style.display = 'none'; return; }
+  const existing = document.querySelector('.ft-level-bar');
+  if (orientation === 'vertical') { if (existing) existing.style.display = 'none'; return; }
 
   const viewport = document.getElementById('ft-viewport');
   let colWrap = viewport.parentElement;
@@ -304,22 +321,20 @@ function renderLevelLabels(depthCount) {
     colWrap = wrap;
   }
 
-  let levelBar = colWrap.querySelector('.ft-level-bar');
-  if (!levelBar) {
-    levelBar = document.createElement('div');
-    levelBar.className = 'ft-level-bar';
-    const inner = document.createElement('div');
-    inner.className = 'ft-level-inner';
-    levelBar.appendChild(inner);
-    colWrap.insertBefore(levelBar, viewport);
+  let bar = colWrap.querySelector('.ft-level-bar');
+  if (!bar) {
+    bar = document.createElement('div');
+    bar.className = 'ft-level-bar';
+    bar.innerHTML = '<div class="ft-level-inner"></div>';
+    colWrap.insertBefore(bar, viewport);
     viewport.addEventListener('scroll', () => {
-      const inn = levelBar.querySelector('.ft-level-inner');
+      const inn = bar.querySelector('.ft-level-inner');
       if (inn) inn.style.transform = `translateX(-${viewport.scrollLeft}px)`;
     });
   }
-  levelBar.style.display = '';
+  bar.style.display = '';
 
-  const inner = levelBar.querySelector('.ft-level-inner');
+  const inner = bar.querySelector('.ft-level-inner');
   inner.innerHTML = '';
   for (let d = 0; d <= depthCount; d++) {
     const lbl = document.createElement('div');
@@ -337,6 +352,7 @@ function renderLevelLabels(depthCount) {
 function renderTree() {
   const canvas = document.getElementById('ft-canvas');
   canvas.innerHTML = '';
+  personElements = new Map(); // reset element registry
 
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.style.cssText = 'position:absolute;inset:0;overflow:visible;pointer-events:none;';
@@ -371,37 +387,73 @@ function renderTree() {
   renderLevelLabels(depth);
   nodes.forEach((n, i) => renderNode(n, canvas, i));
   renderLinks(rootTree, svg);
+
+  // Apply search/filter after DOM is built
   applySearchAndFilter();
 }
 
-// ── Search & filter ─────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════════
+// Search & Filter — uses personElements registry instead of DOM queries
+// ══════════════════════════════════════════════════════════════════════════
 
 function applySearchAndFilter() {
   const term = searchTerm.toLowerCase().trim();
-  const gf = currentFilter;
-  const cards = document.querySelectorAll('.ft-node');
-  if (!cards.length) return;
+  const gf = currentFilter; // string: 'all' or '0','1','2', etc.
 
-  const active = term || gf !== 'all';
-  if (!active) { cards.forEach(el => el.classList.remove('ft-highlight', 'ft-dimmed')); return; }
+  const hasActiveFilter = (term !== '' || gf !== 'all');
 
-  cards.forEach(el => {
-    const name = (el.querySelector('.ft-node-name')?.textContent || '').toLowerCase();
-    const gen = el.dataset.gen || '';
-    const okTerm = !term || name.includes(term);
-    const okGen = gf === 'all' || gen === String(gf);
-    if (okTerm && okGen) { el.classList.add('ft-highlight'); el.classList.remove('ft-dimmed'); }
-    else { el.classList.remove('ft-highlight'); el.classList.add('ft-dimmed'); }
-  });
+  // Iterate over all registered people
+  for (const [personId, elements] of personElements) {
+    const person = peopleById.get(personId);
+    if (!person) continue;
+
+    let matches = true;
+
+    // Check name
+    if (term) {
+      const name = (person.name || '').toLowerCase();
+      if (!name.includes(term)) matches = false;
+    }
+
+    // Check generation
+    if (gf !== 'all') {
+      const gen = String(person.generation ?? '');
+      if (gen !== gf) matches = false;
+    }
+
+    // Apply to DOM elements
+    for (const el of elements) {
+      if (!hasActiveFilter) {
+        el.classList.remove('ft-highlight', 'ft-dimmed');
+      } else if (matches) {
+        el.classList.add('ft-highlight');
+        el.classList.remove('ft-dimmed');
+      } else {
+        el.classList.remove('ft-highlight');
+        el.classList.add('ft-dimmed');
+      }
+    }
+  }
 }
 
 // ── Modal ───────────────────────────────────────────────────────────────
 
+let _modalPerson = null;
+
 function openModal(person) {
+  _modalPerson = person;
   const bd = document.getElementById('ft-modal-backdrop');
   const gen = genStyle(person.generation);
 
-  document.getElementById('modal-photo').src = person.photoUrl || 'https://via.placeholder.com/72';
+  // Avatar
+  const avatarContainer = document.getElementById('modal-avatar');
+  if (person.photoUrl) {
+    avatarContainer.innerHTML = `<img class="ft-modal-photo" src="${person.photoUrl}" alt="${person.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+      <div class="ft-avatar-initials ft-avatar-initials-lg" style="display:none;background:${gen.bg};color:${gen.color}">${getInitials(person.name)}</div>`;
+  } else {
+    avatarContainer.innerHTML = `<div class="ft-avatar-initials ft-avatar-initials-lg" style="background:${gen.bg};color:${gen.color}">${getInitials(person.name)}</div>`;
+  }
+
   document.getElementById('modal-name').textContent = person.name;
   document.getElementById('modal-dates').textContent = formatDates(person);
   document.getElementById('modal-description').textContent = person.description || '';
@@ -409,7 +461,7 @@ function openModal(person) {
   const badge = document.getElementById('modal-relation');
   const isFam = isBurgada(person) || (person.parentId == null && !person.partnerId);
   badge.textContent = isFam ? 'Familia Burgada' : 'Pareja';
-  badge.style.background = isFam ? gen.bg : '#f5f5f0';
+  badge.style.background = isFam ? gen.bg : '#f0ece4';
   badge.style.color = isFam ? gen.color : '#8a7e6e';
 
   document.querySelector('.ft-modal').style.borderTopColor = gen.color;
@@ -427,6 +479,30 @@ function openModal(person) {
   bd.classList.add('open');
 }
 
+function proposeChangeFromModal() {
+  if (!_modalPerson) return;
+  const bd = document.getElementById('ft-modal-backdrop');
+  bd.classList.remove('open');
+
+  // Open request panel
+  const body = document.getElementById('request-body');
+  const chevron = document.getElementById('request-chevron');
+  if (body.classList.contains('hidden')) {
+    body.classList.remove('hidden');
+    chevron.classList.add('open');
+  }
+
+  // Pre-fill fields
+  document.getElementById('req-type').value = 'update-person';
+  document.getElementById('req-person-id').value = _modalPerson.id;
+  document.getElementById('req-person-name').value = _modalPerson.name;
+  document.getElementById('req-details').value = '';
+  document.getElementById('req-details').focus();
+
+  // Scroll to request panel
+  document.querySelector('.ft-request-panel').scrollIntoView({ behavior: 'smooth' });
+}
+
 // ── Zoom ────────────────────────────────────────────────────────────────
 
 function updateZoom(z) {
@@ -442,24 +518,37 @@ function updateZoom(z) {
   rootTree = buildFamilyTree();
   renderTree();
 
+  // Zoom
   document.getElementById('zoom-in').addEventListener('click', () => updateZoom(Math.min(2, +(zoom + 0.1).toFixed(2))));
   document.getElementById('zoom-out').addEventListener('click', () => updateZoom(Math.max(0.2, +(zoom - 0.1).toFixed(2))));
   document.getElementById('zoom-reset').addEventListener('click', () => updateZoom(1));
 
+  // Orientation
   document.getElementById('orientation-toggle').addEventListener('click', () => {
     orientation = orientation === 'horizontal' ? 'vertical' : 'horizontal';
     document.getElementById('orientation-label').textContent = orientation === 'horizontal' ? '→' : '↓';
     renderTree();
   });
 
+  // Modal
   const bd = document.getElementById('ft-modal-backdrop');
   bd.addEventListener('click', e => { if (e.target === bd) bd.classList.remove('open'); });
   document.getElementById('ft-modal-close').addEventListener('click', () => bd.classList.remove('open'));
   document.addEventListener('keydown', e => { if (e.key === 'Escape') bd.classList.remove('open'); });
+  document.getElementById('modal-propose-change').addEventListener('click', proposeChangeFromModal);
 
-  document.getElementById('generation-filter').addEventListener('change', e => { currentFilter = e.target.value; applySearchAndFilter(); });
-  document.getElementById('ft-search-input').addEventListener('input', e => { searchTerm = e.target.value; applySearchAndFilter(); });
+  // Search & filter
+  document.getElementById('generation-filter').addEventListener('change', e => {
+    currentFilter = e.target.value;
+    applySearchAndFilter();
+  });
 
+  document.getElementById('ft-search-input').addEventListener('input', e => {
+    searchTerm = e.target.value;
+    applySearchAndFilter();
+  });
+
+  // Request panel
   document.getElementById('request-toggle').addEventListener('click', () => {
     document.getElementById('request-body').classList.toggle('hidden');
     document.getElementById('request-chevron').classList.toggle('open');
@@ -471,10 +560,14 @@ function updateZoom(z) {
       reportedBy: document.getElementById('req-reporter').value.trim(),
       reportedAt: new Date().toISOString(),
       type: document.getElementById('req-type').value,
-      relatedPerson: { id: document.getElementById('req-person-id').value.trim() || null, nameOrReference: document.getElementById('req-person-name').value.trim() || null },
+      relatedPerson: {
+        id: document.getElementById('req-person-id').value.trim() || null,
+        nameOrReference: document.getElementById('req-person-name').value.trim() || null,
+      },
       details: document.getElementById('req-details').value.trim(),
     };
-    document.getElementById('request-output').textContent = 'Solicitud generada:\n\n' + JSON.stringify(payload, null, 2);
+    document.getElementById('request-output').textContent =
+      'Solicitud generada:\n\n' + JSON.stringify(payload, null, 2);
     document.getElementById('request-form').reset();
   });
 })();
