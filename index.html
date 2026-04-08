@@ -1,133 +1,124 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Familia Burgada</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Familia Burgada</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
 
-  <body>
+<div class="ft-layout">
 
-     <div class="app">
-    <!-- ÁRBOL + ZOOM -->
-    <div class="tree-wrapper">
-        <div class="tree-toolbar">
-          <div class="toolbar-left">
-            <span class="section-title" style="margin-bottom:0;">Familia Burgada</span>
-            <div style="margin-top:4px;font-size:0.8rem;color:#6b7280;">
-              Generación:
-              <select id="generation-filter" style="font-size:0.8rem;padding:2px 4px;border-radius:999px;border:1px solid #d1d5db;">
-                <option value="all">Todas</option>
-                <!-- Las opciones reales se rellenan desde JS -->
-              </select>
-            </div>
-          </div>
-          <div class="toolbar-right">
-            <button id="zoom-out" class="zoom-btn">-</button>
-            <button id="zoom-reset" class="zoom-btn">Reset</button>
-            <button id="zoom-in" class="zoom-btn">+</button>
-            <span id="zoom-level" class="zoom-level-label">100%</span>
+  <!-- ── Header ──────────────────────────────────────────────────── -->
+  <div class="ft-header">
+    <div class="ft-header-left">
+      <h1 class="ft-title">Familia Burgada</h1>
+      <span class="ft-count" id="ft-count"></span>
+    </div>
+    <div class="ft-header-right">
+      <label class="ft-gen-filter">
+        Generación
+        <select id="generation-filter">
+          <option value="all">Todas</option>
+        </select>
+      </label>
+      <div class="ft-search">
+        <input id="ft-search-input" class="ft-input" placeholder="Buscar persona…" />
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Body: sidebar + viewport ────────────────────────────────── -->
+  <div class="ft-body">
+
+    <!-- Sidebar zoom -->
+    <div class="ft-sidebar">
+      <button class="ft-zoom-btn" id="zoom-in" title="Acercar">+</button>
+      <span class="ft-zoom-val" id="zoom-label">100 %</span>
+      <button class="ft-zoom-btn" id="zoom-out" title="Alejar">−</button>
+      <div class="ft-sidebar-sep"></div>
+      <button class="ft-zoom-btn" id="zoom-reset" title="Reset">↺</button>
+    </div>
+
+    <!-- Viewport -->
+    <div class="ft-viewport" id="ft-viewport">
+      <div class="ft-canvas" id="ft-canvas"></div>
+    </div>
+
+    <!-- Modal detalle -->
+    <div class="ft-modal-backdrop" id="ft-modal-backdrop">
+      <div class="ft-modal">
+        <button class="ft-modal-close" id="ft-modal-close">✕</button>
+        <div class="ft-modal-header">
+          <img id="modal-photo" class="ft-modal-photo" src="" alt="" />
+          <div>
+            <div class="ft-modal-badge" id="modal-relation"></div>
+            <h2 id="modal-name"></h2>
+            <div class="ft-modal-sub" id="modal-dates"></div>
           </div>
         </div>
-
-      <div class="tree-scroll">
-        <div id="tree-inner" class="tree-inner">
-          <div id="tree" class="tree">
-            <!-- aquí se inyecta el UL del árbol -->
-          </div>
+        <div class="ft-modal-body" id="modal-description"></div>
+        <div class="ft-modal-grid">
+          <div class="ft-modal-card"><div class="ft-modal-label">Generación</div><div class="ft-modal-value" id="modal-gen"></div></div>
+          <div class="ft-modal-card"><div class="ft-modal-label">Lugar de nacimiento</div><div class="ft-modal-value" id="modal-birthplace"></div></div>
+          <div class="ft-modal-card"><div class="ft-modal-label">Pareja</div><div class="ft-modal-value" id="modal-spouse"></div></div>
+          <div class="ft-modal-card"><div class="ft-modal-label">Hijos</div><div class="ft-modal-value" id="modal-children"></div></div>
+          <div class="ft-modal-card"><div class="ft-modal-label">Notas</div><div class="ft-modal-value" id="modal-notes"></div></div>
         </div>
       </div>
     </div>
 
-    <!-- INFO ABAJO -->
-    <div class="info-container">
-      <div class="section-title">Detalles de la persona</div>
+  </div><!-- /ft-body -->
 
-      <div id="info-placeholder" class="info-placeholder">
-        Haz clic en alguien del árbol para ver su información.
-      </div>
-
-      <div id="info-card" class="info-card hidden">
-        <div class="info-card-header">
-          <img id="info-photo" class="info-card-photo" src="" alt="" />
-          <div class="info-card-main">
-            <div class="badge" id="info-relation"></div>
-            <div class="info-card-name" id="info-name"></div>
-            <div class="info-card-sub" id="info-generation"></div>
-            <div class="info-card-sub" id="info-dates"></div>
-          </div>
-        </div>
-
-        <div class="info-card-body" id="info-description"></div>
-
-        <div class="info-card-meta">
-          <div>
-            <div class="meta-label">Lugar de nacimiento</div>
-            <div id="info-birthplace"></div>
-          </div>
-          <div>
-            <div class="meta-label">Pareja(s)</div>
-            <div id="info-spouses"></div>
-          </div>
-          <div>
-            <div class="meta-label">Notas</div>
-            <div id="info-notes"></div>
-          </div>
-        </div>
-      </div>
-         <!-- FORMULARIO SOLICITUD CAMBIO -->
-    <div class="request-container">
-      <div class="section-title">Solicitar cambio de información</div>
-      <p style="font-size:0.8rem;color:#6b7280;margin-bottom:8px;">
+  <!-- ── Panel solicitud cambio ──────────────────────────────────── -->
+  <div class="ft-request-panel">
+    <div class="ft-request-toggle" id="request-toggle">
+      <span>📝</span> Solicitar cambio de información
+      <span class="ft-chevron" id="request-chevron">▾</span>
+    </div>
+    <div class="ft-request-body hidden" id="request-body">
+      <p class="ft-request-hint">
         Rellena este formulario para informar de un nuevo nacimiento, fallecimiento o cambio de datos.
-        El sistema generará un pequeño JSON que el administrador puede usar para actualizar el fichero <code>people.json</code>.
+        El sistema generará un JSON que el administrador puede usar para actualizar <code>people.json</code>.
       </p>
-
       <form id="request-form">
         <div>
           <label for="req-reporter">Tu nombre</label>
           <input id="req-reporter" type="text" placeholder="Ej: Ana Pérez" required />
         </div>
-
         <div>
           <label for="req-type">Tipo de cambio</label>
           <select id="req-type" required>
-            <option value="">Selecciona...</option>
-            <option value="update-person">Modificar datos de una persona</option>
+            <option value="">Selecciona…</option>
+            <option value="update-person">Modificar datos</option>
             <option value="new-birth">Nuevo nacimiento</option>
             <option value="death">Fallecimiento</option>
             <option value="other">Otro</option>
           </select>
         </div>
-
         <div>
-          <label for="req-person-id">Persona relacionada (ID, si lo sabes)</label>
+          <label for="req-person-id">Persona (ID)</label>
           <input id="req-person-id" type="text" placeholder="Ej: 3" />
         </div>
-
         <div>
-          <label for="req-person-name">Persona relacionada (nombre)</label>
-          <input id="req-person-name" type="text" placeholder="Ej: Ana Pérez o 'hijo de Juan y María'" />
+          <label for="req-person-name">Persona (nombre)</label>
+          <input id="req-person-name" type="text" placeholder="Ej: hijo de Juan y María" />
         </div>
-
-        <div style="grid-column:1 / -1;">
+        <div style="grid-column:1/-1">
           <label for="req-details">Detalles</label>
-          <textarea id="req-details"
-            placeholder="Ej: Nuevo nacimiento: Nombre, fecha, padres, lugar...&#10;O: Actualizar fecha de nacimiento de Ana, debería ser 1975-01-10."></textarea>
+          <textarea id="req-details" placeholder="Ej: Nuevo nacimiento: Nombre, fecha, padres…"></textarea>
         </div>
-
-        <button type="submit">Generar solicitud</button>
+        <button type="submit" class="ft-btn">Generar solicitud</button>
       </form>
-
-      <div id="request-output" class="request-output">
-        Aquí aparecerá el JSON de la solicitud para copiar/pegar.
-      </div>
-    </div>
+      <pre class="ft-request-output" id="request-output">Aquí aparecerá el JSON de la solicitud.</pre>
     </div>
   </div>
 
-    <script src="script.js"></script>
-  </body>
+</div>
+
+<script src="script.js"></script>
+</body>
 </html>
