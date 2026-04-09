@@ -71,7 +71,7 @@
   <script>
     const GEN_COLORS=['#6f5b3e','#4a7c59','#3e6b8a','#7c5a8a','#8a5a5a','#5a7c8a','#7a6b3e','#3e8a7c'];
     let people=[], sortCol='birthDate', sortDir='asc';
-    function isBurgada(p){return p.parentId!=null||(p.parentId==null&&!p.partnerId);}
+    function isBurgada(p) { return p.parentId != null || p.id == 1; }
     function getInitials(n){if(!n)return'?';const p=n.trim().split(/\s+/);return p.length===1?p[0][0].toUpperCase():(p[0][0]+p[p.length-1][0]).toUpperCase();}
     function parseDateForSort(s){if(!s)return null;const d=new Date(s);if(!isNaN(d.getTime()))return d.getTime();const p=s.split('/');if(p.length===3){const d2=new Date(`${p[2]}-${p[1]}-${p[0]}`);if(!isNaN(d2.getTime()))return d2.getTime();}const y=parseInt(s);if(!isNaN(y))return new Date(y,0,1).getTime();return null;}
     function getSortValue(p){switch(sortCol){case'name':return(p.name||'').toLowerCase();case'generation':return p.generation??999;case'birthDate':return parseDateForSort(p.birthDate);case'type':return isBurgada(p)?0:1;case'gender':return p.gender||'Z';case'status':return p.deathDate?1:0;default:return 0;}}
