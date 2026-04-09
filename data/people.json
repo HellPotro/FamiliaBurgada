@@ -6,7 +6,7 @@
     "name": "Pedro Burgada Besantes",
     "generation": 1,
     "gender": "M",
-    "description": "En el último tercio del siglo diecinueve, llega a Santander, procedente del País Vasco nuestro primer Pedro Burgada, nacido en San Sebastián. Establece una pequeña industria en una travesía de la calle del Monte, para fabricar toneles (cubas grandes para envasar vino u otros líquidos). Contrae matrimonio con una joven santanderina, Felisa Campo. Tienen dos hijos, varones. El mayor Pedro y el segundo Francisco.",
+    "description": "En el último tercio del siglo diecinueve, llega a Santander, procedente del País Vasco nuestro primer Pedro Burgada, nacido en San Sebastián. Establece una pequeña industria en una travesía de la calle del Monte, para fabricar toneles (cubas grandes para envasar vino u otros líquidos). Contrae matrimonio con una joven santanderina, Felisa Campos. Tienen dos hijos, varones. El mayor Pedro y el segundo Francisco.",
     "birthDate": "",
     "deathDate": "",
     "birthPlace": "País Vasco, España",
@@ -721,7 +721,7 @@
     "generation": 5,
     "gender": "M",
     "description": "",
-    "birthDate": "91-06-11",
+    "birthDate": "1991-06-11",
     "deathDate": "",
     "birthPlace": "Santander",
     "photoUrl": "images/alberto_burgada_ruiz.jpg",
@@ -1147,7 +1147,7 @@
     "photoUrl": "",
     "notes": ""
   },
-    {
+  {
     "id": 83,
     "partnerId": null,
     "parentId": 50,
