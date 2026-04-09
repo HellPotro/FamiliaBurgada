@@ -1160,5 +1160,19 @@
     "photoUrl": "",
     "description": "",
     "notes": ""
+  },
+  {
+    "id": 84,
+    "partnerId": null,
+    "parentId": 50,
+    "generation": 6,
+    "name": "Alba Burgada Llama",
+    "gender": "F",
+    "birthDate": "2023-11-01",
+    "deathDate": "",
+    "birthPlace": "Santander",
+    "photoUrl": "",
+    "description": "",
+    "notes": ""
   }
 ]
