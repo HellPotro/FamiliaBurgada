@@ -362,8 +362,8 @@ function openModal(person) {
 
   const isFam = isBurgada(person) || (person.parentId == null && !person.partnerId);
   const badge = document.getElementById('modal-relation');
-  badge.textContent = isFam ? 'Familia Burgada' : 'Pareja'; badge.style.background = isFam ? gen.bg : '#f0ece4'; badge.style.color = isFam ? gen.color : '#8a7e6e';
-  document.querySelector('.ft-modal').style.borderTopColor = gen.color;
+  badge.textContent = isFam ? 'Familia Burgada' : 'Pareja'; badge.style.background = isFam ? 'rgba(255,253,248,.8)' : 'rgba(255,253,248,.8)'; badge.style.color = isFam ? gen.color : '#8a7e6e';
+  document.getElementById('modal-hero').style.background = `linear-gradient(145deg, ${gen.bg}, #ece5d8)`;
   document.getElementById('modal-gen').textContent = `${person.generation ?? '?'}`;
   document.getElementById('modal-birthplace').textContent = person.birthPlace || '—';
   const spouse = person.partnerId ? peopleById.get(person.partnerId) : null;
