@@ -11,77 +11,69 @@
     :root { --bg: #f0ece4; --surface: #fffdf8; --border: #ddd5c8; --text: #2c241d; --text-dim: #8a7e6e; --accent: #6f5b3e; --accent-light: #f5f0e6; --shadow: 0 2px 12px rgba(44,36,29,.08); --font: 'DM Sans', system-ui, sans-serif; --font-display: 'Playfair Display', Georgia, serif; --danger: #b91c1c; --danger-bg: #fef2f2; --success: #15803d; --success-bg: #f0fdf4; }
     body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; padding: 24px; }
     .ed-wrap { max-width: 800px; margin: 0 auto; }
-
     .ed-header { display: flex; align-items: baseline; gap: 14px; margin-bottom: 24px; flex-wrap: wrap; }
     .ed-header h1 { font-family: var(--font-display); font-size: 26px; font-weight: 800; color: var(--accent); }
     .ed-nav { display: flex; gap: 8px; }
     .ed-link { font-size: 12px; font-weight: 600; color: var(--accent); text-decoration: none; background: var(--accent-light); padding: 5px 12px; border-radius: 999px; border: 1px solid var(--border); transition: .15s; }
     .ed-link:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-    /* Action cards */
     .ed-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 24px; }
-    .ed-action-btn {
-      background: var(--surface); border: 2px solid var(--border); border-radius: 14px;
-      padding: 18px 14px; text-align: center; cursor: pointer; transition: .18s;
-      font-family: var(--font); font-size: 13px; font-weight: 600; color: var(--text-dim);
-    }
+    .ed-action-btn { background: var(--surface); border: 2px solid var(--border); border-radius: 14px; padding: 18px 14px; text-align: center; cursor: pointer; transition: .18s; font-family: var(--font); font-size: 13px; font-weight: 600; color: var(--text-dim); }
     .ed-action-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
     .ed-action-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
     .ed-action-icon { font-size: 24px; display: block; margin-bottom: 6px; }
 
-    /* Form card */
     .ed-card { background: var(--surface); border-radius: 16px; padding: 24px; box-shadow: var(--shadow); margin-bottom: 20px; }
     .ed-card-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
     .ed-form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; }
     .ed-field { display: flex; flex-direction: column; gap: 4px; }
     .ed-field.full { grid-column: 1 / -1; }
     .ed-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-dim); }
-    .ed-input, .ed-select, .ed-textarea {
-      font-family: var(--font); font-size: 13px; padding: 8px 12px; border-radius: 10px;
-      border: 1px solid var(--border); background: var(--accent-light); color: var(--text);
-      outline: none; transition: .18s;
-    }
+    .ed-input, .ed-select, .ed-textarea { font-family: var(--font); font-size: 13px; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--accent-light); color: var(--text); outline: none; transition: .18s; }
     .ed-input:focus, .ed-select:focus, .ed-textarea:focus { border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 3px rgba(111,91,62,.1); }
     .ed-textarea { resize: vertical; min-height: 60px; }
-    .ed-select { cursor: pointer; }
-
     .ed-computed { font-size: 12px; color: var(--accent); font-weight: 600; padding: 6px 10px; background: var(--accent-light); border-radius: 8px; border: 1px dashed var(--border); }
 
     .ed-btn { background: var(--accent); border: none; color: #fff; border-radius: 10px; padding: 10px 20px; font-size: 14px; font-weight: 600; font-family: var(--font); cursor: pointer; transition: .18s; display: inline-flex; align-items: center; gap: 6px; }
     .ed-btn:hover { background: #5a4a33; }
+    .ed-btn:disabled { opacity: .5; cursor: not-allowed; }
     .ed-btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-dim); border-radius: 10px; padding: 10px 20px; font-size: 14px; font-weight: 600; font-family: var(--font); cursor: pointer; transition: .18s; display: inline-flex; align-items: center; gap: 6px; }
     .ed-btn-outline:hover { border-color: var(--accent); color: var(--accent); }
-    .ed-btn-danger { background: var(--danger); color: #fff; }
-    .ed-btn-danger:hover { background: #991b1b; }
     .ed-form-actions { grid-column: 1 / -1; display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
 
-    /* Toast */
-    .ed-toast {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-      padding: 10px 20px; border-radius: 10px; font-size: 13px; font-weight: 600;
-      box-shadow: 0 8px 30px rgba(44,36,29,.15); z-index: 1000; transition: opacity .3s;
-      opacity: 0; pointer-events: none;
-    }
+    .ed-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); padding: 10px 20px; border-radius: 10px; font-size: 13px; font-weight: 600; box-shadow: 0 8px 30px rgba(44,36,29,.15); z-index: 1000; transition: opacity .3s; opacity: 0; pointer-events: none; }
     .ed-toast.show { opacity: 1; }
     .ed-toast.success { background: var(--success-bg); color: var(--success); border: 1px solid #bbf7d0; }
     .ed-toast.error { background: var(--danger-bg); color: var(--danger); border: 1px solid #fecaca; }
-
-    /* Output */
     .ed-output { background: #1e1b16; color: #d4cfc5; padding: 14px 16px; border-radius: 12px; font-size: 12px; font-family: 'DM Mono', monospace; max-height: 400px; overflow: auto; white-space: pre-wrap; margin-top: 12px; }
 
-    /* Preview */
     .ed-preview { display: flex; align-items: center; gap: 12px; padding: 14px; background: var(--accent-light); border-radius: 12px; margin-bottom: 16px; }
     .ed-preview-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 800; font-size: 15px; border: 2px solid var(--surface); box-shadow: 0 0 0 2px var(--accent); }
     .ed-preview-info { flex: 1; }
     .ed-preview-name { font-weight: 700; font-size: 14px; }
     .ed-preview-meta { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
 
-    /* Changes list */
     .ed-changes { margin-top: 16px; }
     .ed-change-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; font-size: 13px; margin-bottom: 6px; }
     .ed-change-add { background: var(--success-bg); color: var(--success); }
     .ed-change-edit { background: #fef3c7; color: #92400e; }
     .ed-change-badge { font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 2px 6px; border-radius: 4px; background: rgba(0,0,0,.08); }
+
+    /* ── Searchable person picker ───────────────────────────────────── */
+    .pp-wrap { position: relative; }
+    .pp-input { font-family: var(--font); font-size: 13px; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--accent-light); color: var(--text); outline: none; transition: .18s; width: 100%; }
+    .pp-input:focus { border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 3px rgba(111,91,62,.1); }
+    .pp-input::placeholder { color: var(--text-dim); }
+    .pp-dropdown { position: absolute; top: 100%; left: 0; right: 0; z-index: 50; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 12px 36px rgba(44,36,29,.14); max-height: 280px; overflow-y: auto; margin-top: 4px; display: none; }
+    .pp-dropdown.open { display: block; }
+    .pp-group-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-dim); padding: 8px 14px 4px; position: sticky; top: 0; background: var(--surface); }
+    .pp-option { padding: 8px 14px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: background .1s; }
+    .pp-option:hover { background: var(--accent-light); }
+    .pp-option-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 800; font-size: 11px; flex-shrink: 0; }
+    .pp-option-name { font-weight: 600; }
+    .pp-option-meta { font-size: 11px; color: var(--text-dim); margin-left: auto; white-space: nowrap; }
+    .pp-empty { padding: 16px 14px; font-size: 13px; color: var(--text-dim); text-align: center; }
+    .pp-selected { background: var(--accent-light); border-left: 3px solid var(--accent); }
 
     .hidden { display: none !important; }
     @media (max-width: 600px) { body { padding: 14px; } .ed-form { grid-template-columns: 1fr; } .ed-actions { grid-template-columns: 1fr 1fr; } }
@@ -96,29 +88,19 @@
     <div class="ed-nav">
       <a href="index.html" class="ed-link">← Árbol</a>
       <a href="list.html" class="ed-link">📋 Listado</a>
+      <a href="stats.html" class="ed-link">📊 Estadísticas</a>
     </div>
   </div>
 
-  <!-- Actions -->
   <div class="ed-actions">
-    <div class="ed-action-btn" data-mode="add-child">
-      <span class="ed-action-icon">👶</span> Añadir hijo/a
-    </div>
-    <div class="ed-action-btn" data-mode="add-partner">
-      <span class="ed-action-icon">💍</span> Añadir pareja
-    </div>
-    <div class="ed-action-btn" data-mode="add-root">
-      <span class="ed-action-icon">🌳</span> Añadir raíz
-    </div>
-    <div class="ed-action-btn" data-mode="edit">
-      <span class="ed-action-icon">📝</span> Editar persona
-    </div>
+    <div class="ed-action-btn" data-mode="add-child"><span class="ed-action-icon">👶</span> Añadir hijo/a</div>
+    <div class="ed-action-btn" data-mode="add-partner"><span class="ed-action-icon">💍</span> Añadir pareja</div>
+    <div class="ed-action-btn" data-mode="add-root"><span class="ed-action-icon">🌳</span> Añadir raíz</div>
+    <div class="ed-action-btn" data-mode="edit"><span class="ed-action-icon">📝</span> Editar persona</div>
   </div>
 
-  <!-- Dynamic form area -->
   <div id="ed-form-area"></div>
 
-  <!-- Changes log & export -->
   <div class="ed-card" id="ed-export-card" style="display:none">
     <div class="ed-card-title">📦 Cambios pendientes</div>
     <div class="ed-changes" id="ed-changes-list"></div>
@@ -134,8 +116,10 @@
 <div class="ed-toast" id="ed-toast"></div>
 
 <script>
+const GEN_COLORS = ['#6f5b3e','#4a7c59','#3e6b8a','#7c5a8a','#8a5a5a','#5a7c8a','#7a6b3e','#3e8a7c'];
+
 let people = [];
-let changes = []; // { type: 'add'|'edit', person: {...}, label: string }
+let changes = [];
 let nextId = 1;
 
 async function loadPeople() {
@@ -143,45 +127,124 @@ async function loadPeople() {
   nextId = Math.max(...people.map(p => p.id)) + 1;
 }
 
-function personLabel(p) {
-  return `${p.name} (ID:${p.id}, Gen ${p.generation ?? '?'})`;
-}
-
-function getInitials(name) {
-  if (!name) return '?';
-  const parts = name.trim().split(/\s+/);
-  return parts.length === 1 ? parts[0][0].toUpperCase() : (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-}
+function getInitials(n) { if (!n) return '?'; const p = n.trim().split(/\s+/); return p.length === 1 ? p[0][0].toUpperCase() : (p[0][0] + p[p.length - 1][0]).toUpperCase(); }
+function genColor(g) { return GEN_COLORS[(g ?? 0) % GEN_COLORS.length]; }
 
 function toast(msg, type = 'success') {
   const el = document.getElementById('ed-toast');
-  el.textContent = msg;
-  el.className = `ed-toast ${type} show`;
+  el.textContent = msg; el.className = `ed-toast ${type} show`;
   setTimeout(() => el.classList.remove('show'), 2500);
 }
 
-function personSelectHTML(id, label, filter = null) {
-  let opts = `<option value="">— Selecciona ${label} —</option>`;
-  let filtered = filter ? people.filter(filter) : people;
-  // Sort by generation then name
+// ══════════════════════════════════════════════════════════════════════════
+// Searchable Person Picker
+// ══════════════════════════════════════════════════════════════════════════
+
+let _pickerCounter = 0;
+
+/**
+ * Creates a searchable person picker and returns { el, getValue, onSelect }
+ * @param {string} placeholder
+ * @param {function|null} filter - optional filter fn(person) => bool
+ * @param {function} onSelect - callback(person)
+ */
+function createPersonPicker(placeholder, filter, onSelect) {
+  const id = `pp-${++_pickerCounter}`;
+  const filtered = filter ? people.filter(filter) : [...people];
   filtered.sort((a, b) => (a.generation ?? 0) - (b.generation ?? 0) || (a.name || '').localeCompare(b.name || ''));
+
+  // Group by generation
+  const groups = new Map();
   filtered.forEach(p => {
-    opts += `<option value="${p.id}">${personLabel(p)}</option>`;
+    const g = p.generation ?? 0;
+    if (!groups.has(g)) groups.set(g, []);
+    groups.get(g).push(p);
   });
-  return `<select class="ed-select" id="${id}">${opts}</select>`;
+
+  const wrap = document.createElement('div');
+  wrap.className = 'pp-wrap';
+
+  const input = document.createElement('input');
+  input.className = 'pp-input';
+  input.placeholder = placeholder || 'Escribe para buscar…';
+  input.id = id;
+
+  const dropdown = document.createElement('div');
+  dropdown.className = 'pp-dropdown';
+
+  let selectedId = null;
+
+  function renderOptions(search) {
+    dropdown.innerHTML = '';
+    const term = (search || '').toLowerCase().trim();
+    let any = false;
+
+    for (const [gen, persons] of groups) {
+      const matches = persons.filter(p => !term || (p.name || '').toLowerCase().includes(term));
+      if (!matches.length) continue;
+      any = true;
+
+      const label = document.createElement('div');
+      label.className = 'pp-group-label';
+      label.style.borderLeft = `3px solid ${genColor(gen)}`;
+      label.textContent = `Generación ${gen}`;
+      dropdown.appendChild(label);
+
+      matches.forEach(p => {
+        const opt = document.createElement('div');
+        opt.className = 'pp-option' + (selectedId === p.id ? ' pp-selected' : '');
+        const c = genColor(p.generation);
+        opt.innerHTML = `
+          <div class="pp-option-avatar" style="background:${c}18;color:${c}">${getInitials(p.name)}</div>
+          <span class="pp-option-name">${p.name}</span>
+          <span class="pp-option-meta">ID:${p.id}</span>`;
+        opt.addEventListener('click', () => {
+          selectedId = p.id;
+          input.value = p.name;
+          dropdown.classList.remove('open');
+          onSelect(p);
+        });
+        dropdown.appendChild(opt);
+      });
+    }
+
+    if (!any) {
+      dropdown.innerHTML = '<div class="pp-empty">No se encontraron personas</div>';
+    }
+  }
+
+  input.addEventListener('focus', () => { renderOptions(input.value); dropdown.classList.add('open'); });
+  input.addEventListener('input', () => { selectedId = null; renderOptions(input.value); dropdown.classList.add('open'); });
+
+  // Close on outside click
+  document.addEventListener('click', e => {
+    if (!wrap.contains(e.target)) dropdown.classList.remove('open');
+  });
+
+  wrap.appendChild(input);
+  wrap.appendChild(dropdown);
+
+  return {
+    el: wrap,
+    getValue: () => selectedId,
+    reset: () => { selectedId = null; input.value = ''; },
+  };
 }
+
+// ══════════════════════════════════════════════════════════════════════════
+// Form helpers
+// ══════════════════════════════════════════════════════════════════════════
 
 function personFieldsHTML(prefix, defaults = {}) {
   return `
     <div class="ed-field"><label class="ed-label">Nombre completo</label><input class="ed-input" id="${prefix}-name" value="${defaults.name || ''}" placeholder="María Isabel Burgada Palleiro" /></div>
-    <div class="ed-field"><label class="ed-label">Sexo</label><select class="ed-select" id="${prefix}-gender"><option value="" ${!defaults.gender ? 'selected' : ''}>—</option><option value="M" ${defaults.gender === 'M' ? 'selected' : ''}>Masculino</option><option value="F" ${defaults.gender === 'F' ? 'selected' : ''}>Femenino</option></select></div>
-    <div class="ed-field"><label class="ed-label">Fecha nacimiento</label><input class="ed-input" id="${prefix}-birth" value="${defaults.birthDate || ''}" placeholder="1985-03-15" /></div>
-    <div class="ed-field"><label class="ed-label">Fecha fallecimiento</label><input class="ed-input" id="${prefix}-death" value="${defaults.deathDate || ''}" placeholder="Dejar vacío si vive" /></div>
-    <div class="ed-field"><label class="ed-label">Lugar nacimiento</label><input class="ed-input" id="${prefix}-birthplace" value="${defaults.birthPlace || ''}" placeholder="Madrid" /></div>
-    <div class="ed-field"><label class="ed-label">URL foto</label><input class="ed-input" id="${prefix}-photo" value="${defaults.photoUrl || ''}" placeholder="images/nombre.jpg" /></div>
-    <div class="ed-field full"><label class="ed-label">Descripción</label><textarea class="ed-textarea" id="${prefix}-desc" placeholder="Breve descripción…">${defaults.description || ''}</textarea></div>
-    <div class="ed-field full"><label class="ed-label">Notas</label><textarea class="ed-textarea" id="${prefix}-notes" placeholder="Notas adicionales…">${defaults.notes || ''}</textarea></div>
-  `;
+    <div class="ed-field"><label class="ed-label">Sexo</label><select class="ed-select" id="${prefix}-gender"><option value="" ${!defaults.gender?'selected':''}>—</option><option value="M" ${defaults.gender==='M'?'selected':''}>Masculino</option><option value="F" ${defaults.gender==='F'?'selected':''}>Femenino</option></select></div>
+    <div class="ed-field"><label class="ed-label">Fecha nacimiento</label><input class="ed-input" id="${prefix}-birth" value="${defaults.birthDate||''}" placeholder="1985-03-15" /></div>
+    <div class="ed-field"><label class="ed-label">Fecha fallecimiento</label><input class="ed-input" id="${prefix}-death" value="${defaults.deathDate||''}" placeholder="Vacío si vive" /></div>
+    <div class="ed-field"><label class="ed-label">Lugar nacimiento</label><input class="ed-input" id="${prefix}-birthplace" value="${defaults.birthPlace||''}" placeholder="Madrid" /></div>
+    <div class="ed-field"><label class="ed-label">URL foto</label><input class="ed-input" id="${prefix}-photo" value="${defaults.photoUrl||''}" placeholder="images/nombre.jpg" /></div>
+    <div class="ed-field full"><label class="ed-label">Descripción</label><textarea class="ed-textarea" id="${prefix}-desc" placeholder="Breve descripción…">${defaults.description||''}</textarea></div>
+    <div class="ed-field full"><label class="ed-label">Notas</label><textarea class="ed-textarea" id="${prefix}-notes" placeholder="Notas adicionales…">${defaults.notes||''}</textarea></div>`;
 }
 
 function readFields(prefix) {
@@ -199,123 +262,92 @@ function readFields(prefix) {
 
 function applyChange(change) {
   changes.push(change);
-  if (change.type === 'add') {
-    people.push(change.person);
-    nextId = Math.max(nextId, change.person.id + 1);
-  } else if (change.type === 'edit') {
-    const idx = people.findIndex(p => p.id === change.person.id);
-    if (idx >= 0) people[idx] = { ...people[idx], ...change.person };
-  }
+  if (change.type === 'add') { people.push(change.person); nextId = Math.max(nextId, change.person.id + 1); }
+  else if (change.type === 'edit') { const i = people.findIndex(p => p.id === change.person.id); if (i >= 0) people[i] = { ...people[i], ...change.person }; }
   renderChanges();
   toast(change.label);
 }
 
 function renderChanges() {
-  const card = document.getElementById('ed-export-card');
-  const list = document.getElementById('ed-changes-list');
+  const card = document.getElementById('ed-export-card'), list = document.getElementById('ed-changes-list');
   if (!changes.length) { card.style.display = 'none'; return; }
   card.style.display = '';
   list.innerHTML = '';
-  changes.forEach((c, i) => {
-    const div = document.createElement('div');
-    div.className = `ed-change-item ${c.type === 'add' ? 'ed-change-add' : 'ed-change-edit'}`;
-    div.innerHTML = `<span class="ed-change-badge">${c.type === 'add' ? '+ NUEVO' : '✎ EDITADO'}</span> ${c.label}`;
-    list.appendChild(div);
+  changes.forEach(c => {
+    const d = document.createElement('div');
+    d.className = `ed-change-item ${c.type === 'add' ? 'ed-change-add' : 'ed-change-edit'}`;
+    d.innerHTML = `<span class="ed-change-badge">${c.type === 'add' ? '+ NUEVO' : '✎ EDITADO'}</span> ${c.label}`;
+    list.appendChild(d);
   });
 }
 
-// ── Modes ───────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════════
+// Modes
+// ══════════════════════════════════════════════════════════════════════════
 
 function showAddChild() {
   const area = document.getElementById('ed-form-area');
-  area.innerHTML = `
-    <div class="ed-card">
-      <div class="ed-card-title">👶 Añadir hijo/a</div>
-      <div class="ed-form">
-        <div class="ed-field full"><label class="ed-label">Padre o madre (el que está en el árbol)</label>${personSelectHTML('ac-parent', 'padre/madre')}</div>
-        <div class="ed-field full" id="ac-computed" style="display:none"></div>
-        ${personFieldsHTML('ac')}
-        <div class="ed-form-actions"><button class="ed-btn" id="ac-submit" disabled>Añadir al árbol</button></div>
-      </div>
-    </div>`;
+  area.innerHTML = `<div class="ed-card"><div class="ed-card-title">👶 Añadir hijo/a</div>
+    <div class="ed-form"><div class="ed-field full"><label class="ed-label">Padre o madre</label><div id="ac-picker-slot"></div></div>
+    <div class="ed-field full" id="ac-computed" style="display:none"></div>
+    ${personFieldsHTML('ac')}
+    <div class="ed-form-actions"><button class="ed-btn" id="ac-submit" disabled>Añadir al árbol</button></div></div></div>`;
 
-  document.getElementById('ac-parent').addEventListener('change', () => {
-    const pid = parseInt(document.getElementById('ac-parent').value);
-    const parent = people.find(p => p.id === pid);
-    const comp = document.getElementById('ac-computed');
-    const btn = document.getElementById('ac-submit');
-    if (parent) {
-      const gen = (parent.generation ?? 0) + 1;
-      comp.style.display = '';
-      comp.innerHTML = `<div class="ed-computed">ID automático: <strong>${nextId}</strong> · Generación: <strong>${gen}</strong> · Padre: <strong>${parent.name}</strong></div>`;
-      btn.disabled = false;
-    } else { comp.style.display = 'none'; btn.disabled = true; }
+  let selectedParent = null;
+  const picker = createPersonPicker('Escribe el nombre del padre o madre…', null, p => {
+    selectedParent = p;
+    const gen = (p.generation ?? 0) + 1;
+    document.getElementById('ac-computed').style.display = '';
+    document.getElementById('ac-computed').innerHTML = `<div class="ed-computed">ID: <strong>${nextId}</strong> · Generación: <strong>${gen}</strong> · Padre/madre: <strong>${p.name}</strong></div>`;
+    document.getElementById('ac-submit').disabled = false;
   });
+  document.getElementById('ac-picker-slot').appendChild(picker.el);
 
   document.getElementById('ac-submit').addEventListener('click', () => {
-    const pid = parseInt(document.getElementById('ac-parent').value);
-    const parent = people.find(p => p.id === pid);
-    if (!parent) return;
+    if (!selectedParent) return;
     const fields = readFields('ac');
     if (!fields.name) { toast('Introduce un nombre', 'error'); return; }
-    const person = { id: nextId, partnerId: null, parentId: pid, generation: (parent.generation ?? 0) + 1, ...fields };
-    applyChange({ type: 'add', person, label: `${fields.name} (hijo/a de ${parent.name})` });
-    showAddChild(); // reset form
+    const person = { id: nextId, partnerId: null, parentId: selectedParent.id, generation: (selectedParent.generation ?? 0) + 1, ...fields };
+    applyChange({ type: 'add', person, label: `${fields.name} (hijo/a de ${selectedParent.name})` });
+    showAddChild();
   });
 }
 
 function showAddPartner() {
   const area = document.getElementById('ed-form-area');
-  const singles = people.filter(p => !p.partnerId);
-  area.innerHTML = `
-    <div class="ed-card">
-      <div class="ed-card-title">💍 Añadir pareja</div>
-      <div class="ed-form">
-        <div class="ed-field full"><label class="ed-label">Persona que recibe pareja</label>${personSelectHTML('ap-target', 'persona', p => !p.partnerId)}</div>
-        <div class="ed-field full" id="ap-computed" style="display:none"></div>
-        ${personFieldsHTML('ap')}
-        <div class="ed-form-actions"><button class="ed-btn" id="ap-submit" disabled>Añadir pareja</button></div>
-      </div>
-    </div>`;
+  area.innerHTML = `<div class="ed-card"><div class="ed-card-title">💍 Añadir pareja</div>
+    <div class="ed-form"><div class="ed-field full"><label class="ed-label">Persona que recibe pareja</label><div id="ap-picker-slot"></div></div>
+    <div class="ed-field full" id="ap-computed" style="display:none"></div>
+    ${personFieldsHTML('ap')}
+    <div class="ed-form-actions"><button class="ed-btn" id="ap-submit" disabled>Añadir pareja</button></div></div></div>`;
 
-  document.getElementById('ap-target').addEventListener('change', () => {
-    const tid = parseInt(document.getElementById('ap-target').value);
-    const target = people.find(p => p.id === tid);
-    const comp = document.getElementById('ap-computed');
-    const btn = document.getElementById('ap-submit');
-    if (target) {
-      comp.style.display = '';
-      comp.innerHTML = `<div class="ed-computed">ID automático: <strong>${nextId}</strong> · Generación: <strong>${target.generation ?? '?'}</strong> · Pareja de: <strong>${target.name}</strong></div>`;
-      btn.disabled = false;
-    } else { comp.style.display = 'none'; btn.disabled = true; }
+  let selectedTarget = null;
+  const picker = createPersonPicker('Escribe el nombre…', p => !p.partnerId, p => {
+    selectedTarget = p;
+    document.getElementById('ap-computed').style.display = '';
+    document.getElementById('ap-computed').innerHTML = `<div class="ed-computed">ID: <strong>${nextId}</strong> · Generación: <strong>${p.generation ?? '?'}</strong> · Pareja de: <strong>${p.name}</strong></div>`;
+    document.getElementById('ap-submit').disabled = false;
   });
+  document.getElementById('ap-picker-slot').appendChild(picker.el);
 
   document.getElementById('ap-submit').addEventListener('click', () => {
-    const tid = parseInt(document.getElementById('ap-target').value);
-    const target = people.find(p => p.id === tid);
-    if (!target) return;
+    if (!selectedTarget) return;
     const fields = readFields('ap');
     if (!fields.name) { toast('Introduce un nombre', 'error'); return; }
-    const partner = { id: nextId, partnerId: tid, parentId: null, generation: target.generation ?? 0, ...fields };
-    applyChange({ type: 'add', person: partner, label: `${fields.name} (pareja de ${target.name})` });
-    // Update target's partnerId
-    applyChange({ type: 'edit', person: { id: tid, partnerId: partner.id }, label: `${target.name} → partnerId = ${partner.id}` });
+    const partner = { id: nextId, partnerId: selectedTarget.id, parentId: null, generation: selectedTarget.generation ?? 0, ...fields };
+    applyChange({ type: 'add', person: partner, label: `${fields.name} (pareja de ${selectedTarget.name})` });
+    applyChange({ type: 'edit', person: { id: selectedTarget.id, partnerId: partner.id }, label: `${selectedTarget.name} → partnerId = ${partner.id}` });
     showAddPartner();
   });
 }
 
 function showAddRoot() {
   const area = document.getElementById('ed-form-area');
-  area.innerHTML = `
-    <div class="ed-card">
-      <div class="ed-card-title">🌳 Añadir persona raíz</div>
-      <div class="ed-form">
-        <div class="ed-field"><label class="ed-label">Generación</label><input class="ed-input" id="ar-gen" type="number" value="0" min="0" /></div>
-        <div class="ed-field"><div class="ed-computed">ID automático: <strong>${nextId}</strong> · Sin padre · Sin pareja</div></div>
-        ${personFieldsHTML('ar')}
-        <div class="ed-form-actions"><button class="ed-btn" id="ar-submit">Añadir raíz</button></div>
-      </div>
-    </div>`;
+  area.innerHTML = `<div class="ed-card"><div class="ed-card-title">🌳 Añadir persona raíz</div>
+    <div class="ed-form"><div class="ed-field"><label class="ed-label">Generación</label><input class="ed-input" id="ar-gen" type="number" value="0" min="0" /></div>
+    <div class="ed-field"><div class="ed-computed">ID: <strong>${nextId}</strong> · Sin padre · Sin pareja</div></div>
+    ${personFieldsHTML('ar')}
+    <div class="ed-form-actions"><button class="ed-btn" id="ar-submit">Añadir raíz</button></div></div></div>`;
 
   document.getElementById('ar-submit').addEventListener('click', () => {
     const fields = readFields('ar');
@@ -329,95 +361,76 @@ function showAddRoot() {
 
 function showEdit() {
   const area = document.getElementById('ed-form-area');
-  area.innerHTML = `
-    <div class="ed-card">
-      <div class="ed-card-title">📝 Editar persona</div>
-      <div class="ed-form">
-        <div class="ed-field full"><label class="ed-label">Selecciona persona</label>${personSelectHTML('ee-target', 'persona')}</div>
-        <div id="ee-fields" style="display:none"></div>
-      </div>
-    </div>`;
+  area.innerHTML = `<div class="ed-card"><div class="ed-card-title">📝 Editar persona</div>
+    <div class="ed-form"><div class="ed-field full"><label class="ed-label">Selecciona persona</label><div id="ee-picker-slot"></div></div>
+    <div id="ee-fields" style="display:none"></div></div></div>`;
 
-  document.getElementById('ee-target').addEventListener('change', () => {
-    const tid = parseInt(document.getElementById('ee-target').value);
-    const target = people.find(p => p.id === tid);
+  const picker = createPersonPicker('Escribe el nombre…', null, target => {
     const container = document.getElementById('ee-fields');
-    if (!target) { container.style.display = 'none'; return; }
     container.style.display = '';
+    const c = genColor(target.generation);
     container.innerHTML = `
       <div class="ed-preview">
-        <div class="ed-preview-avatar" style="background:var(--accent-light);color:var(--accent)">${getInitials(target.name)}</div>
-        <div class="ed-preview-info">
-          <div class="ed-preview-name">${target.name}</div>
-          <div class="ed-preview-meta">ID: ${target.id} · Gen ${target.generation ?? '?'} · parentId: ${target.parentId ?? 'null'} · partnerId: ${target.partnerId ?? 'null'}</div>
-        </div>
+        <div class="ed-preview-avatar" style="background:${c}18;color:${c}">${getInitials(target.name)}</div>
+        <div class="ed-preview-info"><div class="ed-preview-name">${target.name}</div>
+        <div class="ed-preview-meta">ID: ${target.id} · Gen ${target.generation ?? '?'} · parentId: ${target.parentId ?? 'null'} · partnerId: ${target.partnerId ?? 'null'}</div></div>
       </div>
       <div class="ed-form">
         ${personFieldsHTML('ee', target)}
         <div class="ed-field"><label class="ed-label">Generación</label><input class="ed-input" id="ee-gen" type="number" value="${target.generation ?? 0}" min="0" /></div>
         <div class="ed-form-actions"><button class="ed-btn" id="ee-submit">Guardar cambios</button></div>
       </div>`;
-
     document.getElementById('ee-submit').addEventListener('click', () => {
       const fields = readFields('ee');
       if (!fields.name) { toast('El nombre no puede estar vacío', 'error'); return; }
-      const gen = parseInt(document.getElementById('ee-gen').value) || target.generation;
-      const updated = { id: target.id, generation: gen, ...fields };
-      applyChange({ type: 'edit', person: updated, label: `Editado: ${fields.name} (ID:${target.id})` });
+      const gen = parseInt(document.getElementById('ee-gen').value) ?? target.generation;
+      applyChange({ type: 'edit', person: { id: target.id, generation: gen, ...fields }, label: `Editado: ${fields.name} (ID:${target.id})` });
       showEdit();
     });
   });
+  document.getElementById('ee-picker-slot').appendChild(picker.el);
 }
 
-// ── Export ───────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════════
+// Export
+// ══════════════════════════════════════════════════════════════════════════
 
-function copyToClipboard(text) {
-  navigator.clipboard.writeText(text).then(() => toast('Copiado al portapapeles'));
-}
+function copyToClipboard(text) { navigator.clipboard.writeText(text).then(() => toast('Copiado al portapapeles')); }
 
 function downloadJSON() {
   const blob = new Blob([JSON.stringify(people, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'people.json'; a.click();
-  URL.revokeObjectURL(url);
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'people.json'; a.click();
   toast('Descargado people.json');
 }
 
-// ── Init ────────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════════
+// Init
+// ══════════════════════════════════════════════════════════════════════════
 
 (async function init() {
   await loadPeople();
 
-  // Mode buttons
   document.querySelectorAll('.ed-action-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.ed-action-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      const mode = btn.dataset.mode;
-      if (mode === 'add-child') showAddChild();
-      else if (mode === 'add-partner') showAddPartner();
-      else if (mode === 'add-root') showAddRoot();
-      else if (mode === 'edit') showEdit();
+      const m = btn.dataset.mode;
+      if (m === 'add-child') showAddChild();
+      else if (m === 'add-partner') showAddPartner();
+      else if (m === 'add-root') showAddRoot();
+      else if (m === 'edit') showEdit();
     });
   });
 
-  // Export buttons
   document.getElementById('ed-copy-full').addEventListener('click', () => {
     copyToClipboard(JSON.stringify(people, null, 2));
-    const out = document.getElementById('ed-output');
-    out.textContent = JSON.stringify(people, null, 2);
-    out.classList.remove('hidden');
+    const o = document.getElementById('ed-output'); o.textContent = JSON.stringify(people, null, 2); o.classList.remove('hidden');
   });
-
   document.getElementById('ed-copy-diff').addEventListener('click', () => {
     const diff = changes.map(c => ({ action: c.type, ...c.person }));
     copyToClipboard(JSON.stringify(diff, null, 2));
-    const out = document.getElementById('ed-output');
-    out.textContent = JSON.stringify(diff, null, 2);
-    out.classList.remove('hidden');
+    const o = document.getElementById('ed-output'); o.textContent = JSON.stringify(diff, null, 2); o.classList.remove('hidden');
   });
-
   document.getElementById('ed-download').addEventListener('click', downloadJSON);
 })();
 </script>
