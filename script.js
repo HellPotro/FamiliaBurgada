@@ -24,7 +24,7 @@ let highlightEdges = null;     // Set<string>
 
 // ── Helpers ─────────────────────────────────────────────────────────────
 
-function isBurgada(p) { return p.parentId != null; }
+function isBurgada(p) { return p.parentId != null || p.id == 1; }
 function isSpouse(p) { return p.parentId == null && p.partnerId != null; }
 
 function shouldRenderAsPrimary(person) {
