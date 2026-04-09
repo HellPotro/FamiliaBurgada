@@ -55,7 +55,7 @@
       const people = await (await fetch('data/people.json')).json();
       const total = people.length, alive = people.filter(p => !p.deathDate).length, deceased = total - alive;
       const male = people.filter(p => p.gender === 'M').length, female = people.filter(p => p.gender === 'F').length, unknown = total - male - female;
-      const burgada = people.filter(p => p.parentId != null || (p.parentId == null && !p.partnerId)).length, spouses = total - burgada;
+      const burgada = people.filter(p =>  p.parentId != null || p.id == 1).length, spouses = total - burgada;
       const gens = {}; people.forEach(p => { const g = p.generation ?? 0; gens[g] = (gens[g] || 0) + 1; });
       const genKeys = Object.keys(gens).map(Number).sort((a, b) => a - b);
       const maxCount = Math.max(...Object.values(gens));
