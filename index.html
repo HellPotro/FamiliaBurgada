@@ -17,6 +17,7 @@
       <span class="ft-count" id="ft-count"></span>
       <a href="stats.html" class="ft-nav-link">📊 Estadísticas</a>
       <a href="list.html" class="ft-nav-link">📋 Listado</a>
+      <a href="editor.html" class="ft-nav-link">✏️ Editor</a>
     </div>
     <div class="ft-header-right">
       <label class="ft-gen-filter">Generación
@@ -48,30 +49,33 @@
       <div class="ft-canvas" id="ft-canvas"></div>
     </div>
 
+    <!-- Modal -->
     <div class="ft-modal-backdrop" id="ft-modal-backdrop">
       <div class="ft-modal">
         <button class="ft-modal-close" id="ft-modal-close">✕</button>
-        <div class="ft-modal-header">
+        <!-- Hero: centered avatar + name -->
+        <div class="ft-modal-hero" id="modal-hero">
           <div class="ft-modal-avatar" id="modal-avatar"></div>
-          <div>
-            <div class="ft-modal-badge" id="modal-relation"></div>
-            <h2 id="modal-name"></h2>
-            <div class="ft-modal-sub" id="modal-dates"></div>
+          <div class="ft-modal-badge" id="modal-relation"></div>
+          <h2 id="modal-name"></h2>
+          <div class="ft-modal-sub" id="modal-dates"></div>
+        </div>
+        <!-- Content below hero -->
+        <div class="ft-modal-content">
+          <div class="ft-modal-body" id="modal-description"></div>
+          <div class="ft-modal-lineage" id="modal-lineage"></div>
+          <div class="ft-modal-grid">
+            <div class="ft-modal-card"><div class="ft-modal-label">Generación</div><div class="ft-modal-value" id="modal-gen"></div></div>
+            <div class="ft-modal-card"><div class="ft-modal-label">Lugar de nacimiento</div><div class="ft-modal-value" id="modal-birthplace"></div></div>
+            <div class="ft-modal-card"><div class="ft-modal-label">Pareja</div><div class="ft-modal-value" id="modal-spouse"></div></div>
+            <div class="ft-modal-card"><div class="ft-modal-label">Hijos</div><div class="ft-modal-value" id="modal-children"></div></div>
+            <div class="ft-modal-card" style="grid-column:1/-1"><div class="ft-modal-label">Notas</div><div class="ft-modal-value" id="modal-notes"></div></div>
           </div>
-        </div>
-        <div class="ft-modal-body" id="modal-description"></div>
-        <div class="ft-modal-lineage" id="modal-lineage"></div>
-        <div class="ft-modal-grid">
-          <div class="ft-modal-card"><div class="ft-modal-label">Generación</div><div class="ft-modal-value" id="modal-gen"></div></div>
-          <div class="ft-modal-card"><div class="ft-modal-label">Lugar de nacimiento</div><div class="ft-modal-value" id="modal-birthplace"></div></div>
-          <div class="ft-modal-card"><div class="ft-modal-label">Pareja</div><div class="ft-modal-value" id="modal-spouse"></div></div>
-          <div class="ft-modal-card"><div class="ft-modal-label">Hijos</div><div class="ft-modal-value" id="modal-children"></div></div>
-          <div class="ft-modal-card" style="grid-column:1/-1"><div class="ft-modal-label">Notas</div><div class="ft-modal-value" id="modal-notes"></div></div>
-        </div>
-        <div class="ft-modal-actions">
-          <button class="ft-btn-outline" id="modal-trace-lineage">🌳 Ver linaje</button>
-          <button class="ft-btn-outline" id="modal-trace-descendants">👨‍👩‍👧‍👦 Descendientes</button>
-          <button class="ft-btn-outline" id="modal-propose-change">📝 Proponer cambio</button>
+          <div class="ft-modal-actions">
+            <button class="ft-btn-outline" id="modal-trace-lineage">🌳 Ver linaje</button>
+            <button class="ft-btn-outline" id="modal-trace-descendants">👨‍👩‍👧‍👦 Descendientes</button>
+            <button class="ft-btn-outline" id="modal-propose-change">📝 Proponer cambio</button>
+          </div>
         </div>
       </div>
     </div>
